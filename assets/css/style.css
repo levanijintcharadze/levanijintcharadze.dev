@@ -1,0 +1,14 @@
+body{
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+.container-fluid{
+    height: 750px;
+    background-image: url('..assets/images/pattern.png');
+    background-repeat: repeat-x;
+    background-attachment: fixed;
+    background-position: left;
+    margin: 0;
+    padding: 0;
+}
