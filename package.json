@@ -13,7 +13,7 @@
     },
     "license": "ISC",
     "devDependencies": {
-        "lite-server": "^1.12.9"
+        "lite-server": "2.3.0"
     },
     "dependencies": {
         "@fortawesome/fontawesome": "^1.0.1",
