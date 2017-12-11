@@ -3,12 +3,17 @@ body{
     margin: 0;
     padding: 0;
 }
-.container-fluid{
-    height: 750px;
-    background-image: url('..assets/images/pattern.png');
-    background-repeat: repeat-x;
-    background-attachment: fixed;
-    background-position: left;
+header{
+    height: 550px;
+    background-image: url('../images/pattern.png');
+    background-repeat: repeat;
+    background-position: center;
     margin: 0;
     padding: 0;
+    z-index: -1;
+}
+.container{
+    top: -50px;
+    background-color: #808080;
+    height: 400px;
 }
