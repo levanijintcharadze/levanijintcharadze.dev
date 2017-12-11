@@ -16,6 +16,6 @@
         "lite-server": "^1.12.9"
     },
     "dependencies": {
-        
+        "jquery": "^3.2.1"
     }
 }
