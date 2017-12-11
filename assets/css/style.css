@@ -12,8 +12,3 @@ header{
     padding: 0;
     z-index: -1;
 }
-.container{
-    top: -50px;
-    background-color: #808080;
-    height: 400px;
-}
