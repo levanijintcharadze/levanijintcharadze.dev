@@ -3,12 +3,22 @@ body{
     margin: 0;
     padding: 0;
 }
-header{
-    height: 550px;
-    background-image: url('../images/pattern.png');
-    background-repeat: repeat;
-    background-position: center;
-    margin: 0;
-    padding: 0;
-    z-index: -1;
+canvas{
+    display: block;
+}
+#particles-js {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: #969696;
+    background-image: url("");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: 50% 50%;
+    z-index: -2;
+}
+.container{
+    background-color: aliceblue;
+    box-shadow: 0 0 4px #e9e9e9;
+    padding: 5px;
 }
