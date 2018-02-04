@@ -1,11 +1,23 @@
 body{
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #f1f3f5;
+    height: 100%;
+    background: radial-gradient(at top left, #eef2f5, #e6eaed, #dbdfe0);
+    background: -webkit-radial-gradient(at top left, #eef2f5, #e6eaed, #dbdfe0);
+    background: -moz-radial-gradient(at top left, #eef2f5, #e6eaed, #dbdfe0);
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    margin: 0;
 }
 .main-c{
-    background-color: #f8f9fa;
-    box-shadow: 0 0 10px rgba(33,37,41,.05);
-    width: 80%;
+    background-color: #f0f1f3;
+    box-shadow: 20px 50px 40px rgba(0,0,0,.08);
+    margin-top: 150px;
+    width: 1600px;
     height: 650px;
+}
+.logo-bg{
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+    background-color: #8ebed1;
 }
 /*background-color: #c2d9e9;*/
