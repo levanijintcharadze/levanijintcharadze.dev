@@ -13,6 +13,9 @@
     },
     "license": "ISC",
     "dependencies": {
-        "lite-server": "^2.3.0"
+        "bootstrap": "^4.0.0",
+        "jquery": "^3.3.1",
+        "lite-server": "^2.3.0",
+        "popper.js": "^1.12.9"
     }
 }
