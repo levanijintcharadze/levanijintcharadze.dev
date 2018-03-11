@@ -19,6 +19,7 @@ body{
     height: 300px;
     border-radius: 50%;
     background-color: #8ebed1;
+    box-shadow: 0px 0px px rgba(0,0,0,.09);
 }
 /*background-color: #c2d9e9;*/
 @media (max-width: 576px) { 
