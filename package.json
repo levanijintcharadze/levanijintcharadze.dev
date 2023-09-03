@@ -1,5 +1,5 @@
 {
-    "name": "levanijincharadze",
+    "name": "levanjintcharadze",
     "version": "1.0.0",
     "description": "my personal website",
     "scripts": {
@@ -7,13 +7,14 @@
         "start": "npm run lite"
     },
     "author": {
-        "name": "levani jincharadze",
-        "email": "levanijincharadze@outlook.com",
-        "url": "http://levanijincharadze.me"
+        "name": "levan jintcharadze",
+        "email": "levanijintcharadze@outlook.com",
+        "url": "http://levanijincharadze.dev"
     },
     "license": "ISC",
     "dependencies": {
-        "bootstrap": "^4.0.0",
+        "@fortawesome/fontawesome-free": "^6.4.2",
+        "bootstrap": "^5.3.1",
         "jquery": "^3.5.0",
         "lite-server": "^2.3.0",
         "popper.js": "^1.12.9"
