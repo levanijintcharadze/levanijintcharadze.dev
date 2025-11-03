@@ -33,7 +33,7 @@ npm run preview
 
 ## 🌐 Deployment
 
-This site is configured for automatic deployment to GitHub Pages. See [DEPLOYMENT.md](./DEPLOYMENT.md) for detailed setup instructions.
+This site is configured for automatic deployment to GitHub Pages. See [DEPLOYMENT.md](DEPLOYMENT.md) for detailed setup instructions.
 
 ### Quick Setup:
 1. Go to **Settings** → **Pages** in your GitHub repository

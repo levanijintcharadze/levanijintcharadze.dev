@@ -20,14 +20,19 @@ Once GitHub Pages is enabled, the site will automatically deploy when:
 
 ### 3. Access Your Site
 
-After the first successful deployment, your site will be available at:
+After the first successful deployment, your site will be available at one of these URLs depending on your setup:
+
+**For GitHub Pages (default):**
 ```
 https://levanijintcharadze.github.io/levanijintcharadze.dev/
 ```
 
-Or if using a custom domain:
+**For custom domain:**
 ```
-https://your-custom-domain.com
+https://levanijintcharadze.dev
+```
+
+> **Note:** The repository name suggests this site is intended for a custom domain. If deploying to a project page URL, you may need to update the `base` path in `vite.config.ts`.
 ```
 
 ## How It Works
@@ -51,9 +56,23 @@ To manually trigger a deployment:
 ## Build Configuration
 
 The site is built using Vite with the following configuration:
-- Base path: `/` (root)
-- Build output: `dist/` directory
-- Assets are fingerprinted for optimal caching
+- **Base path**: `/` (root) - suitable for custom domains or user/org pages
+- **Build output**: `dist/` directory
+- **Assets**: Fingerprinted for optimal caching
+
+### Configuring Base Path
+
+If deploying to a project page (e.g., `username.github.io/repo-name`), update the base path:
+
+1. Set environment variable when building:
+   ```bash
+   BASE_PATH=/repo-name/ npm run build
+   ```
+
+2. Or modify `vite.config.ts`:
+   ```typescript
+   base: '/repo-name/',
+   ```
 
 ## Troubleshooting
 
