@@ -1,26 +1,45 @@
+# Levan Jintcharadze - Portfolio
 
-# ✨ Welcome to Your Spark Template
+A modern, responsive portfolio website built with React, Vite, and Tailwind CSS.
 
-You've just launched your brand-new Spark Template Codespace — everything’s fired up and ready for you to explore, build, and create with Spark!
+## 🚀 Features
 
-This template is your blank canvas. It comes with a minimal setup to help you get started quickly with Spark development.
+- Clean, minimal design
+- Responsive layout
+- Modern tech stack (React 19, Vite, Tailwind CSS)
+- Automated deployment to GitHub Pages
 
-🚀 What's Inside?
+## 📦 Getting Started
 
-- A clean, minimal Spark environment
-- Pre-configured for local development
-- Ready to scale with your ideas
-  
-🧠 What Can You Do?
+### Prerequisites
+- Node.js 20 or higher
+- npm
 
-Right now, this is just a starting point — the perfect place to begin building and testing your Spark applications.
+### Installation
 
-🧹 Just Exploring?
-No problem! If you were just checking things out and don’t need to keep this code:
+```bash
+# Install dependencies
+npm install
 
-- Simply delete your Spark.
-- Everything will be cleaned up — no traces left behind.
+# Run development server
+npm run dev
 
-📄 License For Spark Template Resources
+# Build for production
+npm run build
+
+# Preview production build
+npm run preview
+```
+
+## 🌐 Deployment
+
+This site is configured for automatic deployment to GitHub Pages. See [DEPLOYMENT.md](DEPLOYMENT.md) for detailed setup instructions.
+
+### Quick Setup:
+1. Go to **Settings** → **Pages** in your GitHub repository
+2. Set **Source** to **GitHub Actions**
+3. Push to the `main` branch to trigger deployment
+
+## 📄 License
 
 The Spark Template files and resources from GitHub are licensed under the terms of the MIT license, Copyright GitHub, Inc.
