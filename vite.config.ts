@@ -22,4 +22,15 @@ export default defineConfig({
       '@': resolve(projectRoot, 'src')
     }
   },
+  preview: {
+    port: 4173,
+    strictPort: false,
+  },
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: undefined,
+      },
+    },
+  },
 });
