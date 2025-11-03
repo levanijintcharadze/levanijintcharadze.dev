@@ -1,37 +1,26 @@
-## Welcome to GitHub Pages
 
-You can use the [editor on GitHub](https://github.com/levanijincharadze/levanijincharadze.github.io/edit/master/README.md) to maintain and preview the content for your website in Markdown files.
+# ✨ Welcome to Your Spark Template
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+You've just launched your brand-new Spark Template Codespace — everything’s fired up and ready for you to explore, build, and create with Spark!
 
-### Markdown
+This template is your blank canvas. It comes with a minimal setup to help you get started quickly with Spark development.
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+🚀 What's Inside?
 
-```markdown
-Syntax highlighted code block
+- A clean, minimal Spark environment
+- Pre-configured for local development
+- Ready to scale with your ideas
+  
+🧠 What Can You Do?
 
-# Header 1
-## Header 2
-### Header 3
+Right now, this is just a starting point — the perfect place to begin building and testing your Spark applications.
 
-- Bulleted
-- List
+🧹 Just Exploring?
+No problem! If you were just checking things out and don’t need to keep this code:
 
-1. Numbered
-2. List
+- Simply delete your Spark.
+- Everything will be cleaned up — no traces left behind.
 
-**Bold** and _Italic_ and `Code` text
+📄 License For Spark Template Resources
 
-[Link](url) and ![Image](src)
-```
-
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
-
-### Jekyll Themes
-
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/levanijincharadze/levanijincharadze.github.io/settings). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
-
-### Support or Contact
-
-Having trouble with Pages? Check out our [documentation](https://help.github.com/categories/github-pages-basics/) or [contact support](https://github.com/contact) and we’ll help you sort it out.
+The Spark Template files and resources from GitHub are licensed under the terms of the MIT license, Copyright GitHub, Inc.
