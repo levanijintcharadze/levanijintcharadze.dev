@@ -17,6 +17,13 @@ export default async function handler(
     return res.status(500).json({ error: 'Server configuration error' })
   }
 
+  // Get required email configuration
+  const fromEmail = process.env.SENDGRID_FROM_EMAIL
+  if (!fromEmail) {
+    console.error('SENDGRID_FROM_EMAIL is not set')
+    return res.status(500).json({ error: 'Server configuration error' })
+  }
+
   // Get recipient email from environment variables or use default
   const toEmail = process.env.CONTACT_EMAIL || 'levanijincharadze@outlook.com'
 
@@ -55,7 +62,7 @@ export default async function handler(
     // Prepare email message
     const msg = {
       to: toEmail,
-      from: process.env.SENDGRID_FROM_EMAIL || toEmail, // Must be a verified sender in SendGrid
+      from: fromEmail,
       replyTo: email,
       subject: `Portfolio Contact from ${escapedName}`,
       text: `Name: ${escapedName}\nEmail: ${escapedEmail}\n\nMessage:\n${escapedMessage}`,
@@ -78,17 +85,19 @@ export default async function handler(
     await sgMail.send(msg)
 
     return res.status(200).json({ success: true, message: 'Email sent successfully' })
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Error sending email:', error)
     
     // Log more details for debugging
-    if (error.response) {
-      console.error('SendGrid error response:', error.response.body)
+    if (error && typeof error === 'object' && 'response' in error) {
+      console.error('SendGrid error response:', (error as any).response?.body)
     }
+
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred'
 
     return res.status(500).json({ 
       error: 'Failed to send email',
-      details: process.env.NODE_ENV === 'development' ? error.message : undefined
+      details: process.env.NODE_ENV === 'development' ? errorMessage : undefined
     })
   }
 }
