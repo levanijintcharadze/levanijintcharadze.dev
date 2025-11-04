@@ -2,29 +2,62 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faChevronDown, faEnvelope } from '@fortawesome/free-solid-svg-icons'
 import { faGithub, faLinkedin } from '@fortawesome/free-brands-svg-icons'
 import { Button } from '@/components/ui/button'
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger, DialogClose } from '@/components/ui/dialog'
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { Label } from '@/components/ui/label'
 import { GlassCard } from './GlassCard'
+import { useState } from 'react'
+import { toast } from 'sonner'
 
 export function Hero() {
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [isDialogOpen, setIsDialogOpen] = useState(false)
+
   const scrollToSkills = () => {
     document.getElementById('skills')?.scrollIntoView({ behavior: 'smooth' })
   }
 
-  const handleEmailSubmit: React.FormEventHandler<HTMLFormElement> = (e) => {
+  const handleEmailSubmit: React.FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault()
     const form = e.currentTarget
     const data = new FormData(form)
     const name = String(data.get('name') || '')
     const email = String(data.get('email') || '')
     const message = String(data.get('message') || '')
-    const to = (import.meta as any).env?.VITE_CONTACT_EMAIL || ''
-    const subject = encodeURIComponent(`Portfolio contact from ${name || 'Visitor'}`)
-    const body = encodeURIComponent(`From: ${name}\nEmail: ${email}\n\n${message}`)
-    const href = `mailto:${to}?subject=${subject}&body=${body}`
-    window.location.href = href
+
+    setIsSubmitting(true)
+
+    try {
+      const response = await fetch('/api/send-email', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ name, email, message }),
+      })
+
+      const result = await response.json()
+
+      if (response.ok) {
+        toast.success('Message sent successfully!', {
+          description: 'Thank you for reaching out. I\'ll get back to you soon.',
+        })
+        form.reset()
+        setIsDialogOpen(false)
+      } else {
+        toast.error('Failed to send message', {
+          description: result.error || 'Please try again later or contact me directly.',
+        })
+      }
+    } catch (error) {
+      console.error('Error sending email:', error)
+      toast.error('Failed to send message', {
+        description: 'Please try again later or contact me directly.',
+      })
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   return (
@@ -48,7 +81,7 @@ export function Hero() {
             </div>
             
             <div className="flex flex-wrap justify-center gap-4">
-              <Dialog>
+              <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
                 <DialogTrigger asChild>
                   <Button variant="default" className="glass-hover transition-colors">
                     <FontAwesomeIcon icon={faEnvelope} className="mr-2 h-4 w-4 transition-colors" />
@@ -59,26 +92,26 @@ export function Hero() {
                   <DialogHeader>
                     <DialogTitle>Send me a message</DialogTitle>
                     <DialogDescription>
-                      Fill in the form and your email client will open a draft.
+                      Fill in the form below and I'll get back to you as soon as possible.
                     </DialogDescription>
                   </DialogHeader>
                   <form className="space-y-4 text-left" onSubmit={handleEmailSubmit}>
                     <div className="grid gap-2">
                       <Label htmlFor="name">Name</Label>
-                      <Input id="name" name="name" placeholder="Your name" required />
+                      <Input id="name" name="name" placeholder="Your name" required disabled={isSubmitting} />
                     </div>
                     <div className="grid gap-2">
                       <Label htmlFor="email">Email</Label>
-                      <Input id="email" name="email" type="email" placeholder="you@example.com" required />
+                      <Input id="email" name="email" type="email" placeholder="you@example.com" required disabled={isSubmitting} />
                     </div>
                     <div className="grid gap-2">
                       <Label htmlFor="message">Message</Label>
-                      <Textarea id="message" name="message" placeholder="How can I help?" required />
+                      <Textarea id="message" name="message" placeholder="How can I help?" required disabled={isSubmitting} />
                     </div>
                     <DialogFooter>
-                      <DialogClose asChild>
-                        <Button type="submit" className="transition-colors">Send</Button>
-                      </DialogClose>
+                      <Button type="submit" className="transition-colors" disabled={isSubmitting}>
+                        {isSubmitting ? 'Sending...' : 'Send'}
+                      </Button>
                     </DialogFooter>
                   </form>
                 </DialogContent>
