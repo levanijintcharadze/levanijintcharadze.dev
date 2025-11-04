@@ -38,23 +38,37 @@ export default async function handler(
     // Initialize SendGrid with API key
     sgMail.setApiKey(apiKey)
 
+    // Escape HTML to prevent XSS
+    const escapeHtml = (str: string) => {
+      return str
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;')
+    }
+
+    const escapedName = escapeHtml(name)
+    const escapedEmail = escapeHtml(email)
+    const escapedMessage = escapeHtml(message)
+
     // Prepare email message
     const msg = {
       to: toEmail,
       from: process.env.SENDGRID_FROM_EMAIL || toEmail, // Must be a verified sender in SendGrid
       replyTo: email,
-      subject: `Portfolio Contact from ${name}`,
-      text: `Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`,
+      subject: `Portfolio Contact from ${escapedName}`,
+      text: `Name: ${escapedName}\nEmail: ${escapedEmail}\n\nMessage:\n${escapedMessage}`,
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
           <h2 style="color: #333;">New Contact from Portfolio</h2>
           <div style="background-color: #f5f5f5; padding: 20px; border-radius: 5px; margin: 20px 0;">
-            <p><strong>Name:</strong> ${name}</p>
-            <p><strong>Email:</strong> <a href="mailto:${email}">${email}</a></p>
+            <p><strong>Name:</strong> ${escapedName}</p>
+            <p><strong>Email:</strong> <a href="mailto:${escapedEmail}">${escapedEmail}</a></p>
           </div>
           <div style="background-color: #fff; padding: 20px; border: 1px solid #ddd; border-radius: 5px;">
             <h3 style="color: #555; margin-top: 0;">Message:</h3>
-            <p style="white-space: pre-wrap;">${message}</p>
+            <p style="white-space: pre-wrap;">${escapedMessage}</p>
           </div>
         </div>
       `,
