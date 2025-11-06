@@ -5,6 +5,7 @@ import { Experience } from '../components/Experience'
 import { Contact } from './Contact'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCode, faCoffee } from '@fortawesome/free-solid-svg-icons'
+import { Toaster } from '@/components/ui/sonner'
 
 export function HomePage() {
   return (
@@ -33,6 +34,8 @@ export function HomePage() {
           </div>
         </div>
       </footer>
+      
+      <Toaster />
     </div>
   )
 }
