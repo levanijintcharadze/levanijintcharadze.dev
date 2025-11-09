@@ -11,8 +11,22 @@ export function Navigation() {
   useEffect(() => {
     const handleScroll = () => {
       const sections = ['hero', 'skills', 'experience', 'contact']
-      const scrollPosition = window.scrollY + 100
 
+      // If scrolled to (or extremely near) the bottom, force-select the last section
+      const scrollY = window.scrollY
+      const viewportHeight = window.innerHeight
+      const docHeight = Math.max(
+        document.body.scrollHeight,
+        document.documentElement.scrollHeight
+      )
+      const atPageBottom = scrollY + viewportHeight >= docHeight - 2 // epsilon
+      if (atPageBottom) {
+        setActiveSection('contact')
+        return
+      }
+
+      // Otherwise, pick the section that contains the current scroll position (with a small offset)
+      const scrollPosition = scrollY + 120
       for (const section of sections) {
         const element = document.getElementById(section === 'hero' ? 'hero' : section)
         if (element) {
@@ -25,7 +39,9 @@ export function Navigation() {
       }
     }
 
-    window.addEventListener('scroll', handleScroll)
+    // Initialize on mount
+    handleScroll()
+    window.addEventListener('scroll', handleScroll, { passive: true })
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 

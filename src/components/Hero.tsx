@@ -67,6 +67,13 @@ export function Hero() {
         <GlassCard className="float mb-16">
           <div className="space-y-6">
             <div className="space-y-4">
+              <div className="flex justify-center mb-6">
+                <img 
+                  src="/profile.jpg" 
+                  alt="Levan Jintcharadze" 
+                  className="w-32 h-32 md:w-40 md:h-40 rounded-full object-cover border-4 border-primary/20 shadow-lg"
+                />
+              </div>
               <h1 className="text-5xl md:text-6xl font-bold gradient-text">
                 Levan Jintcharadze
               </h1>
