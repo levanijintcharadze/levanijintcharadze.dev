@@ -9,19 +9,19 @@ export function Skills() {
     },
     {
       title: 'Cloud Platforms',
-      skills: ['Microsoft Azure', 'Amazon AWS', 'Azure Functions', 'AWS Lambda', 'Azure DevOps', 'CloudFormation']
+      skills: ['Microsoft Azure', 'Azure Functions', 'Azure DevOps', 'Github']
     },
     {
       title: 'Architecture & Design',
-      skills: ['Microservices', 'REST APIs', 'GraphQL', 'Domain-Driven Design', 'CQRS', 'Event Sourcing']
+      skills: ['Microservices', 'REST APIs', 'Domain-Driven Design', 'CQRS']
     },
     {
       title: 'Data & Caching',
-      skills: ['SQL Server', 'PostgreSQL', 'Redis', 'Azure Cosmos DB', 'MongoDB', 'RabbitMQ']
+      skills: ['SQL Server', 'Redis', 'RabbitMQ']
     },
     {
       title: 'DevOps & Tools',
-      skills: ['Docker', 'Kubernetes', 'Azure Container Instances', 'CI/CD', 'Git', 'Terraform']
+      skills: ['Docker', 'Kubernetes', 'CI/CD', 'Git']
     }
   ]
 

@@ -111,22 +111,22 @@ export function Navigation() {
         </div>
       </nav>
 
-      {/* Mobile Menu Overlay */}
+      {/* Mobile Menu Dropdown (improved UX) */}
       {isMobileMenuOpen && (
         <div className="fixed inset-0 z-40 md:hidden">
-          <div 
-            className="absolute inset-0 bg-background/80 backdrop-blur-sm"
+          <div
+            className="absolute inset-0 bg-background/70 backdrop-blur-sm"
             onClick={() => setIsMobileMenuOpen(false)}
           />
-          <div className="absolute top-20 right-4 glass-strong p-6 rounded-2xl min-w-48">
-            <div className="flex flex-col gap-3">
+          <div className="absolute left-1/2 transform -translate-x-1/2 top-20 glass-strong p-4 rounded-2xl w-[90%] max-w-sm animate-slide-down">
+            <div className="flex flex-col gap-2">
               {navItems.map((item) => (
                 <Button
                   key={item.id}
                   variant="ghost"
-                  size="sm"
+                  size="lg"
                   onClick={() => scrollToSection(item.id)}
-                  className={`justify-start transition-colors ${
+                  className={`w-full justify-center py-3 text-base transition-colors ${
                     activeSection === item.id 
                       ? 'text-primary bg-primary/10' 
                       : 'text-muted-foreground hover:text-foreground'
