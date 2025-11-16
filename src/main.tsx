@@ -2,6 +2,7 @@ import { createRoot } from 'react-dom/client'
 import { ErrorBoundary } from "react-error-boundary";
 import { BrowserRouter } from 'react-router-dom'
 import { SpeedInsights } from '@vercel/speed-insights/react'
+import { Analytics } from "@vercel/analytics/next"
 import "@github/spark/spark"
 
 import App from './App.tsx'
@@ -16,6 +17,7 @@ createRoot(document.getElementById('root')!).render(
     <BrowserRouter>
       <App />
       <SpeedInsights />
+      <Analytics />
     </BrowserRouter>
    </ErrorBoundary>
 )
