@@ -9,8 +9,29 @@ export function CookieConsent() {
   useEffect(() => {
     // Check if user has already given consent
     const consent = localStorage.getItem('cookie-consent')
-    if (!consent) {
-      // Show banner after a short delay
+    
+    if (consent === 'accepted') {
+      // User previously accepted - update consent immediately
+      if (typeof window !== 'undefined' && (window as any).gtag) {
+        (window as any).gtag('consent', 'update', {
+          'ad_storage': 'granted',
+          'ad_user_data': 'granted',
+          'ad_personalization': 'granted',
+          'analytics_storage': 'granted'
+        })
+      }
+    } else if (consent === 'declined') {
+      // User previously declined - ensure it stays denied
+      if (typeof window !== 'undefined' && (window as any).gtag) {
+        (window as any).gtag('consent', 'update', {
+          'ad_storage': 'denied',
+          'ad_user_data': 'denied',
+          'ad_personalization': 'denied',
+          'analytics_storage': 'denied'
+        })
+      }
+    } else {
+      // No consent given yet - show banner after a short delay
       setTimeout(() => setShowBanner(true), 1000)
     }
   }, [])
@@ -18,10 +39,14 @@ export function CookieConsent() {
   const handleAccept = () => {
     localStorage.setItem('cookie-consent', 'accepted')
     setShowBanner(false)
-    // Enable analytics/tracking here if needed
+    
+    // Update consent mode - grant all permissions
     if (typeof window !== 'undefined' && (window as any).gtag) {
       (window as any).gtag('consent', 'update', {
-        analytics_storage: 'granted'
+        'ad_storage': 'granted',
+        'ad_user_data': 'granted',
+        'ad_personalization': 'granted',
+        'analytics_storage': 'granted'
       })
     }
   }
@@ -29,10 +54,14 @@ export function CookieConsent() {
   const handleDecline = () => {
     localStorage.setItem('cookie-consent', 'declined')
     setShowBanner(false)
-    // Disable analytics/tracking here if needed
+    
+    // Update consent mode - keep everything denied
     if (typeof window !== 'undefined' && (window as any).gtag) {
       (window as any).gtag('consent', 'update', {
-        analytics_storage: 'denied'
+        'ad_storage': 'denied',
+        'ad_user_data': 'denied',
+        'ad_personalization': 'denied',
+        'analytics_storage': 'denied'
       })
     }
   }

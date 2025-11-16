@@ -61,7 +61,7 @@ export function Hero() {
   }
 
   return (
-    <section className="min-h-screen flex items-center justify-center relative px-4 pb-24">
+    <section className="min-h-screen flex items-center justify-center relative px-4 pb-12 md:pb-24">
       <div className="absolute inset-0 bg-linear-to-br from-primary/10 via-transparent to-accent/10" />
       <div className="max-w-4xl mx-auto text-center relative z-10">
   <GlassCard className="float mt-10 mb-16">
@@ -157,7 +157,7 @@ export function Hero() {
           </div>
         </GlassCard>
         
-        <div className="mt-8">
+        <div className="mt-4 md:mt-8">
           <Button
             variant="ghost"
             onClick={scrollToSkills}

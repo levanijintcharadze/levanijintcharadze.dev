@@ -108,15 +108,15 @@
 
 /* Glassmorphic utilities */
 .glass {
-  @apply backdrop-blur-md bg-card/70 border border-border/30;
+  @apply backdrop-blur-md bg-card/70 border border-border/50;
 }
 
 .glass-hover {
-  @apply transition-all duration-300 hover:bg-card/90 hover:backdrop-blur-lg hover:border-border/50 hover:text-foreground;
+  @apply transition-all duration-300 hover:bg-card/90 hover:backdrop-blur-lg hover:border-border/70 hover:text-foreground;
 }
 
 .glass-strong {
-  @apply backdrop-blur-lg bg-card/80 border border-border/40;
+  @apply backdrop-blur-lg bg-card/80 border border-border/60;
 }
 
 /* Floating animation */
