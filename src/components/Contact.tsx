@@ -182,19 +182,19 @@ export function Contact() {
               
               <ul className="space-y-3 text-foreground/80">
                 <li className="flex items-start gap-3">
-                  <span className="w-2 h-2 bg-accent rounded-full mt-2 flex-shrink-0" />
+                  <span className="w-2 h-2 bg-accent rounded-full mt-2 shrink-0" />
                   <span>Senior engineering roles in cloud-native environments</span>
                 </li>
                 <li className="flex items-start gap-3">
-                  <span className="w-2 h-2 bg-accent rounded-full mt-2 flex-shrink-0" />
+                  <span className="w-2 h-2 bg-accent rounded-full mt-2 shrink-0" />
                   <span>Technical leadership and architecture opportunities</span>
                 </li>
                 <li className="flex items-start gap-3">
-                  <span className="w-2 h-2 bg-accent rounded-full mt-2 flex-shrink-0" />
+                  <span className="w-2 h-2 bg-accent rounded-full mt-2 shrink-0" />
                   <span>Collaborative teams building scalable solutions</span>
                 </li>
                 <li className="flex items-start gap-3">
-                  <span className="w-2 h-2 bg-accent rounded-full mt-2 flex-shrink-0" />
+                  <span className="w-2 h-2 bg-accent rounded-full mt-2 shrink-0" />
                   <span>Consulting and contract opportunities</span>
                 </li>
               </ul>

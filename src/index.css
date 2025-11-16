@@ -140,5 +140,5 @@
 
 /* Gradient text */
 .gradient-text {
-  @apply bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent;
+  @apply bg-linear-to-br from-primary to-accent bg-clip-text text-transparent;
 }

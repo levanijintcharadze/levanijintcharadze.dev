@@ -1,5 +1,5 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faChevronDown, faEnvelope } from '@fortawesome/free-solid-svg-icons'
+import { faChevronDown, faEnvelope, faDownload } from '@fortawesome/free-solid-svg-icons'
 import { faGithub, faLinkedin } from '@fortawesome/free-brands-svg-icons'
 import { Button } from '@/components/ui/button'
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
@@ -62,7 +62,7 @@ export function Hero() {
 
   return (
     <section className="min-h-screen flex items-center justify-center relative px-4 pb-24">
-      <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-transparent to-accent/10" />
+      <div className="absolute inset-0 bg-linear-to-br from-primary/10 via-transparent to-accent/10" />
       <div className="max-w-4xl mx-auto text-center relative z-10">
   <GlassCard className="float mt-10 mb-16">
           <div className="space-y-6">
@@ -123,6 +123,16 @@ export function Hero() {
                   </form>
                 </DialogContent>
               </Dialog>
+              <Button 
+                variant="outline" 
+                className="glass glass-hover transition-colors hover:text-foreground"
+                asChild
+              >
+                <a href="https://drive.google.com/uc?export=download&id=1s-CmEKAVsTHsD5E7F1N0HM7e0qc35zGU" target="_blank" rel="noopener noreferrer">
+                  <FontAwesomeIcon icon={faDownload} className="mr-2 h-4 w-4 transition-colors" />
+                  Resume
+                </a>
+              </Button>
               <Button 
                 variant="outline" 
                 className="glass glass-hover transition-colors hover:text-foreground"
