@@ -13,7 +13,7 @@
     },
     "dependencies": {
         "@fortawesome/free-brands-svg-icons": "^6.7.2",
-        "@fortawesome/free-solid-svg-icons": "^6.7.2",
+        "@fortawesome/free-solid-svg-icons": "^7.1.0",
         "@fortawesome/react-fontawesome": "^0.2.6",
         "@github/spark": "^0.41.23",
         "@heroicons/react": "^2.2.0",
