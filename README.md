@@ -9,14 +9,14 @@ A modern, responsive portfolio website built with React, Vite, and Tailwind CSS.
 - Modern tech stack (React 19, Vite, Tailwind CSS)
 - Automated deployment to GitHub Pages
 - Contact form with free mailto fallback
-- Optional SendGrid email integration for direct in-app sending
+- Optional Resend email integration for direct in-app sending
 
 ## 📦 Getting Started
 
 ### Prerequisites
 - Node.js 20 or higher
 - npm
-- SendGrid API key (for contact form)
+- Resend API key (for contact form)
 
 ### Installation
 
@@ -39,32 +39,32 @@ npm run preview
 The contact form works in two modes:
 
 1. Free mode (default): if the API is unavailable, it opens a prefilled `mailto:` draft in the visitor's email app.
-2. SendGrid mode (optional): sends directly from the site via `/api/send-email`.
+2. Resend mode (optional): sends directly from the site via `/api/send-email`.
 
-The contact form uses SendGrid to send emails. To enable this feature:
+The contact form uses Resend to send emails. To enable this feature:
 
-1. **Create a SendGrid account** at [https://sendgrid.com](https://sendgrid.com)
+1. **Create a Resend account** at [https://resend.com](https://resend.com)
 
-2. **Generate an API key** in SendGrid:
-   - Go to Settings → API Keys
+2. **Generate an API key** in Resend:
+   - Go to API Keys
    - Click "Create API Key"
-   - Give it a name and select "Full Access" or "Mail Send" permissions
+   - Give it a name and select sending permissions
    - Copy the generated API key
 
-3. **Verify a sender email** in SendGrid:
-   - Go to Settings → Sender Authentication
-   - Verify a single sender email address
+3. **Verify a sending domain** in Resend:
+   - Go to Domains and add your domain
+   - Configure the DNS records Resend provides
    - This will be used as the "from" address for emails
 
 4. **Set up environment variables** in Vercel or your deployment platform:
-   - `SENDGRID_API_KEY` - Your SendGrid API key
-   - `SENDGRID_FROM_EMAIL` - Your verified sender email
+   - `RESEND_API_KEY` - Your Resend API key
+   - `RESEND_FROM_EMAIL` - A sender on your verified domain (e.g. `Your Name <contact@yourdomain.com>`)
    - `CONTACT_EMAIL` - Email address where you want to receive messages (defaults to levanijincharadze@outlook.com)
 
    For local development, create a `.env` file in the root directory:
    ```
-   SENDGRID_API_KEY=your_sendgrid_api_key_here
-   SENDGRID_FROM_EMAIL=your_verified_sender_email@example.com
+   RESEND_API_KEY=re_your_resend_api_key_here
+   RESEND_FROM_EMAIL=Your Name <contact@your-verified-domain.com>
    CONTACT_EMAIL=levanijincharadze@outlook.com
    ```
 

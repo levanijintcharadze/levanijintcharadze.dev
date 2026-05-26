@@ -1,173 +1,63 @@
-# SendGrid Email Integration Setup Guide
+# Resend Email Integration Setup Guide
 
-This guide provides step-by-step instructions for setting up the SendGrid email integration for the contact form.
+This guide provides step-by-step instructions for setting up Resend email integration for the contact form.
 
-Note: SendGrid is optional. Without it, the contact form falls back to opening a prefilled `mailto:` draft in the user's email app.
+Note: direct API sending is optional. Without Resend, the contact form falls back to opening a prefilled `mailto:` draft in the visitor's email app.
 
 ## Prerequisites
 
-1. A SendGrid account (free tier available at https://sendgrid.com)
-2. A Vercel account (free tier available at https://vercel.com)
-3. Access to this GitHub repository
+1. A Resend account (https://resend.com)
+2. A Vercel account (https://vercel.com)
+3. Access to this repository
 
-## Step 1: Create SendGrid Account and API Key
+## Step 1: Create Resend API Key
 
-1. **Sign up for SendGrid**
-   - Go to https://sendgrid.com
-   - Create a free account (allows 100 emails/day)
-   - Verify your email address
+1. Sign in to the Resend dashboard.
+2. Open **API Keys**.
+3. Create a new key with sending permissions.
+4. Copy the key immediately.
 
-2. **Create an API Key**
-   - Log in to SendGrid dashboard
-   - Go to Settings → API Keys
-   - Click "Create API Key"
-   - Name it (e.g., "Portfolio Contact Form")
-   - Select "Full Access" or "Mail Send" permissions
-   - Click "Create & View"
-   - **IMPORTANT**: Copy the API key immediately - you won't be able to see it again!
+## Step 2: Verify Sending Domain
 
-## Step 2: Verify Sender Email
+1. In Resend dashboard, open **Domains**.
+2. Add your domain.
+3. Configure DNS records provided by Resend.
+4. Wait until the domain shows as verified.
 
-1. **Single Sender Verification (Recommended for personal use)**
-   - In SendGrid dashboard, go to Settings → Sender Authentication
-   - Click "Get Started" under "Verify a Single Sender"
-   - Fill in your email details (use the email where you want to receive messages)
-   - Click "Create"
-   - Check your email and click the verification link
-   - Wait for verification to complete
+## Step 3: Configure Vercel Environment Variables
 
-2. **Domain Authentication (Optional, for production)**
-   - Go to Settings → Sender Authentication
-   - Click "Authenticate Your Domain"
-   - Follow the DNS configuration steps
-   - This provides better email deliverability
+Add these variables in your Vercel project settings:
 
-## Step 3: Deploy to Vercel
+```bash
+RESEND_API_KEY=re_xxxxxxxxxxxxxxxxx
+RESEND_FROM_EMAIL=Your Name <contact@your-verified-domain.com>
+CONTACT_EMAIL=levanijincharadze@outlook.com
+```
 
-1. **Connect Repository to Vercel**
-   - Go to https://vercel.com
-   - Click "New Project"
-   - Import this GitHub repository
-   - Vercel will automatically detect it as a Vite project
+`RESEND_FROM_EMAIL` must use the verified domain from Step 2.
 
-2. **Configure Environment Variables**
-   - Before deploying, go to "Environment Variables" section
-   - Add the following variables:
-     ```
-     SENDGRID_API_KEY=SG.xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-     SENDGRID_FROM_EMAIL=your-verified-email@example.com
-     CONTACT_EMAIL=levanijincharadze@outlook.com
-     ```
-   - Replace the values with your actual SendGrid API key and verified email
-   - Click "Deploy"
+## Step 4: Deploy and Test
 
-3. **Verify Deployment**
-   - Wait for deployment to complete
-   - Visit your Vercel URL
-   - Test the contact form by filling it out and clicking "Send"
-   - Check your email inbox for the message
-
-## Step 4: Configure Custom Domain (Optional)
-
-1. **Add Custom Domain in Vercel**
-   - Go to your project settings in Vercel
-   - Click "Domains"
-   - Add your custom domain (e.g., levanijintcharadze.dev)
-   - Follow the DNS configuration instructions
-
-2. **Update CNAME File**
-   - The CNAME file in the repository should contain your custom domain
-   - Commit and push any changes
+1. Deploy the project to Vercel.
+2. Open the deployed site and submit the contact form.
+3. Confirm the message arrives in `CONTACT_EMAIL`.
 
 ## Troubleshooting
 
-### Emails Not Sending
+1. **401 Unauthorized**: API key is invalid or missing.
+2. **403 Forbidden**: sending domain is unverified or `RESEND_FROM_EMAIL` uses a different domain.
+3. **422 Validation error**: malformed `from` format or invalid recipient.
+4. **No email received**: inspect Vercel function logs and Resend logs.
 
-1. **Check SendGrid API Key**
-   - Verify the API key is correct in Vercel environment variables
-   - Ensure the API key has "Mail Send" permissions
+## Local Testing
 
-2. **Check Sender Email**
-   - Verify your sender email is verified in SendGrid
-   - Check that SENDGRID_FROM_EMAIL matches the verified email
+1. Copy `.env.example` to `.env`.
+2. Set your real Resend values.
+3. Run:
 
-3. **Check Logs**
-   - Go to Vercel dashboard → Functions → View logs
-   - Look for error messages in the send-email function logs
-   - Check SendGrid dashboard → Activity for email send attempts
+```bash
+npm install
+npm run dev
+```
 
-4. **Check Spam Folder**
-   - Emails might be landing in spam
-   - Add your sender email to contacts to improve deliverability
-
-### Form Not Working
-
-1. **Check Console Errors**
-   - Open browser developer console (F12)
-   - Look for network errors or JavaScript errors
-   - Verify the API endpoint is accessible
-
-2. **Verify Deployment**
-   - Ensure the `/api/send-email.ts` file is deployed
-   - Check Vercel functions tab to see if the function is listed
-
-### API Quota Exceeded
-
-- SendGrid free tier: 100 emails/day
-- If exceeded, upgrade to a paid plan or wait 24 hours
-- Monitor usage in SendGrid dashboard → Activity
-
-## Security Best Practices
-
-1. **Never Commit API Keys**
-   - API keys should only be in Vercel environment variables
-   - Never commit them to the repository
-   - The `.env.example` file shows required variables without actual values
-
-2. **Rate Limiting**
-   - Consider adding rate limiting to prevent abuse
-   - Monitor SendGrid activity for unusual patterns
-
-3. **Input Validation**
-   - The API endpoint validates email format
-   - HTML is escaped to prevent XSS attacks
-   - Consider adding CAPTCHA for additional protection
-
-## Testing
-
-### Local Testing
-
-1. **Create .env file**
-   ```bash
-   cp .env.example .env
-   ```
-
-2. **Add your SendGrid credentials**
-   ```
-   SENDGRID_API_KEY=your_api_key_here
-   SENDGRID_FROM_EMAIL=your_verified_email@example.com
-   CONTACT_EMAIL=your_email@example.com
-   ```
-
-3. **Install Vercel CLI**
-   ```bash
-   npm install -g vercel
-   ```
-
-4. **Run locally with Vercel dev**
-   ```bash
-   vercel dev
-   ```
-
-5. **Test the form**
-   - Open http://localhost:3000
-   - Fill out the contact form
-   - Check your email
-
-## Support
-
-For issues or questions:
-- Check SendGrid documentation: https://docs.sendgrid.com
-- Check Vercel documentation: https://vercel.com/docs
-- Review the code in `/api/send-email.ts`
-- Check GitHub Issues in this repository
+Then test the contact form in the browser.

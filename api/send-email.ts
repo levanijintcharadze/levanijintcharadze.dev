@@ -1,67 +1,59 @@
+import { createHash } from 'node:crypto'
 import type { VercelRequest, VercelResponse } from '@vercel/node'
-import sgMail from '@sendgrid/mail'
+import { Resend } from 'resend'
+
+const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+
+const escapeHtml = (value: string) =>
+  value
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;')
 
 export default async function handler(
   req: VercelRequest,
   res: VercelResponse
 ) {
-  // Only allow POST requests
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' })
   }
 
-  // Get SendGrid API key from environment variables
-  const apiKey = process.env.SENDGRID_API_KEY
+  const apiKey = process.env.RESEND_API_KEY
   if (!apiKey) {
-    console.error('SENDGRID_API_KEY is not set')
+    console.error('RESEND_API_KEY is not set')
     return res.status(500).json({ error: 'Server configuration error' })
   }
 
-  // Get required email configuration
-  const fromEmail = process.env.SENDGRID_FROM_EMAIL
+  const fromEmail = process.env.RESEND_FROM_EMAIL
   if (!fromEmail) {
-    console.error('SENDGRID_FROM_EMAIL is not set')
+    console.error('RESEND_FROM_EMAIL is not set')
     return res.status(500).json({ error: 'Server configuration error' })
   }
 
-  // Get recipient email from environment variables or use default
   const toEmail = process.env.CONTACT_EMAIL || 'levanijincharadze@outlook.com'
+  const body = req.body as Partial<Record<'name' | 'email' | 'message', unknown>>
+  const name = typeof body.name === 'string' ? body.name.trim() : ''
+  const email = typeof body.email === 'string' ? body.email.trim() : ''
+  const message = typeof body.message === 'string' ? body.message.trim() : ''
 
-  // Parse request body
-  const { name, email, message } = req.body
-
-  // Validate required fields
   if (!name || !email || !message) {
     return res.status(400).json({ error: 'Missing required fields' })
   }
 
-  // Basic email validation
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
   if (!emailRegex.test(email)) {
     return res.status(400).json({ error: 'Invalid email address' })
   }
 
-  try {
-    // Initialize SendGrid with API key
-    sgMail.setApiKey(apiKey)
-
-    // Escape HTML to prevent XSS
-    const escapeHtml = (str: string) => {
-      return str
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;')
-        .replace(/"/g, '&quot;')
-        .replace(/'/g, '&#039;')
-    }
-
-    const escapedName = escapeHtml(name)
-    const escapedEmail = escapeHtml(email)
-    const escapedMessage = escapeHtml(message)
-
-    // Prepare email message
-    const msg = {
-      to: toEmail,
+  const escapedName = escapeHtml(name)
+  const escapedEmail = escapeHtml(email)
+  const escapedMessage = escapeHtml(message)
+  const resend = new Resend(apiKey)
+  const idempotencyKey = `contact-form/${createHash('sha256').update(`${name}|${email}|${message}`).digest('hex')}`
+  const { data, error } = await resend.emails.send(
+    {
+      to: [toEmail],
       from: fromEmail,
       replyTo: email,
       subject: `Portfolio Contact from ${escapedName}`,
@@ -79,25 +71,30 @@ export default async function handler(
           </div>
         </div>
       `,
-    }
+    },
+    { idempotencyKey }
+  )
 
-    // Send email
-    await sgMail.send(msg)
+  if (error) {
+    const statusCode =
+      typeof error === 'object' &&
+      error &&
+      'statusCode' in error &&
+      typeof error.statusCode === 'number'
+        ? error.statusCode
+        : 500
 
-    return res.status(200).json({ success: true, message: 'Email sent successfully' })
-  } catch (error: unknown) {
-    console.error('Error sending email:', error)
-    
-    // Log more details for debugging
-    if (error && typeof error === 'object' && 'response' in error) {
-      console.error('SendGrid error response:', (error as any).response?.body)
-    }
+    console.error('Error sending email with Resend:', error)
 
-    const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred'
-
-    return res.status(500).json({ 
+    return res.status(statusCode).json({
       error: 'Failed to send email',
-      details: process.env.NODE_ENV === 'development' ? errorMessage : undefined
+      details: process.env.NODE_ENV === 'development' ? error.message : undefined,
     })
   }
+
+  return res.status(200).json({
+    success: true,
+    message: 'Email sent successfully',
+    id: data?.id,
+  })
 }
