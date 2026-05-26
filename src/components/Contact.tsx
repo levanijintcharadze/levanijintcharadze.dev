@@ -1,6 +1,6 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEnvelope, faMapPin } from '@fortawesome/free-solid-svg-icons'
-import { faGithub, faLinkedin, faXTwitter, faFacebook, faInstagram, faTiktok, faYoutube, faThreads } from '@fortawesome/free-brands-svg-icons'
+import { faGithub, faLinkedin, faXTwitter, faFacebook, faInstagram, faTiktok, faYoutube, faThreads, faBluesky } from '@fortawesome/free-brands-svg-icons'
 import { Button } from '@/components/ui/button'
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger, DialogClose } from '@/components/ui/dialog'
 import { Input } from '@/components/ui/input'
@@ -13,6 +13,22 @@ import { toast } from 'sonner'
 export function Contact() {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isDialogOpen, setIsDialogOpen] = useState(false)
+
+  const contactEmail = 'levanijincharadze@outlook.com'
+
+  const openMailtoFallback = (name: string, email: string, message: string) => {
+    const subject = `Portfolio Contact from ${name || 'Website Visitor'}`
+    const body = [
+      `Name: ${name}`,
+      `Email: ${email}`,
+      '',
+      'Message:',
+      message,
+    ].join('\n')
+
+    const mailtoUrl = `mailto:${contactEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`
+    window.location.href = mailtoUrl
+  }
 
   const handleEmailSubmit: React.FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault()
@@ -33,7 +49,7 @@ export function Contact() {
         body: JSON.stringify({ name, email, message }),
       })
 
-      const result = await response.json()
+      const result = await response.json().catch(() => ({} as { error?: string }))
 
       if (response.ok) {
         toast.success('Message sent successfully!', {
@@ -42,14 +58,16 @@ export function Contact() {
         form.reset()
         setIsDialogOpen(false)
       } else {
-        toast.error('Failed to send message', {
-          description: result.error || 'Please try again later or contact me directly.',
+        openMailtoFallback(name, email, message)
+        toast.info('Opening your email app', {
+          description: result.error || 'Direct API sending is unavailable right now, so a prefilled draft was created.',
         })
       }
     } catch (error) {
       console.error('Error sending email:', error)
-      toast.error('Failed to send message', {
-        description: 'Please try again later or contact me directly.',
+      openMailtoFallback(name, email, message)
+      toast.info('Opening your email app', {
+        description: 'Direct API sending is unavailable right now, so a prefilled draft was created.',
       })
     } finally {
       setIsSubmitting(false)
@@ -75,10 +93,10 @@ export function Contact() {
                 <div className="flex items-center gap-3">
                   <FontAwesomeIcon icon={faEnvelope} className="h-5 w-5 text-primary" />
                   <a 
-                    href="mailto:levanijincharadze@outlook.com" 
+                    href={`mailto:${contactEmail}`} 
                     className="text-foreground hover:text-primary transition-colors underline-offset-4 hover:underline"
                   >
-                    levanijincharadze@outlook.com
+                    {contactEmail}
                   </a>
                 </div>
                 
@@ -94,7 +112,7 @@ export function Contact() {
                   <Button 
                     variant="outline" 
                     size="icon"
-                    className="glass glass-hover transition-all hover:scale-110 hover:bg-primary/10 hover:border-primary/50 hover:text-primary"
+                    className="glass glass-hover transition-all hover:scale-110 hover:bg-[#181717]/10 hover:border-[#181717]/50 hover:text-[#181717]"
                     asChild
                   >
                     <a href="https://github.com/levanijintcharadze" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
@@ -104,7 +122,7 @@ export function Contact() {
                   <Button 
                     variant="outline" 
                     size="icon"
-                    className="glass glass-hover transition-all hover:scale-110 hover:bg-primary/10 hover:border-primary/50 hover:text-primary"
+                    className="glass glass-hover transition-all hover:scale-110 hover:bg-[#0A66C2]/10 hover:border-[#0A66C2]/50 hover:text-[#0A66C2]"
                     asChild
                   >
                     <a href="https://www.linkedin.com/in/levanjintcharadze/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
@@ -114,7 +132,7 @@ export function Contact() {
                   <Button 
                     variant="outline" 
                     size="icon"
-                    className="glass glass-hover transition-all hover:scale-110 hover:bg-primary/10 hover:border-primary/50 hover:text-primary"
+                    className="glass glass-hover transition-all hover:scale-110 hover:bg-[#111111]/10 hover:border-[#111111]/50 hover:text-[#111111]"
                     asChild
                   >
                     <a href="https://x.com/levani_lj" target="_blank" rel="noopener noreferrer" aria-label="X (Twitter)">
@@ -124,7 +142,17 @@ export function Contact() {
                   <Button 
                     variant="outline" 
                     size="icon"
-                    className="glass glass-hover transition-all hover:scale-110 hover:bg-primary/10 hover:border-primary/50 hover:text-primary"
+                    className="glass glass-hover transition-all hover:scale-110 hover:bg-[#1185FE]/10 hover:border-[#1185FE]/50 hover:text-[#1185FE]"
+                    asChild
+                  >
+                    <a href="https://bsky.app/profile/levanjintcharadze.dev" target="_blank" rel="noopener noreferrer" aria-label="Bluesky">
+                      <FontAwesomeIcon icon={faBluesky} className="h-5 w-5" />
+                    </a>
+                  </Button>
+                  <Button 
+                    variant="outline" 
+                    size="icon"
+                    className="glass glass-hover transition-all hover:scale-110 hover:bg-[#1877F2]/10 hover:border-[#1877F2]/50 hover:text-[#1877F2]"
                     asChild
                   >
                     <a href="https://www.facebook.com/levanjintcharadzedev/" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
@@ -134,7 +162,7 @@ export function Contact() {
                   <Button 
                     variant="outline" 
                     size="icon"
-                    className="glass glass-hover transition-all hover:scale-110 hover:bg-primary/10 hover:border-primary/50 hover:text-primary"
+                    className="glass glass-hover transition-all hover:scale-110 hover:bg-[#E4405F]/10 hover:border-[#E4405F]/50 hover:text-[#E4405F]"
                     asChild
                   >
                     <a href="https://www.instagram.com/levanjintcharadzedev/" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
@@ -144,7 +172,7 @@ export function Contact() {
                   <Button 
                     variant="outline" 
                     size="icon"
-                    className="glass glass-hover transition-all hover:scale-110 hover:bg-primary/10 hover:border-primary/50 hover:text-primary"
+                    className="glass glass-hover transition-all hover:scale-110 hover:bg-[#EE1D52]/10 hover:border-[#EE1D52]/50 hover:text-[#EE1D52]"
                     asChild
                   >
                     <a href="https://www.tiktok.com/@levanjintcharadze0" target="_blank" rel="noopener noreferrer" aria-label="TikTok">
@@ -154,7 +182,7 @@ export function Contact() {
                   <Button 
                     variant="outline" 
                     size="icon"
-                    className="glass glass-hover transition-all hover:scale-110 hover:bg-primary/10 hover:border-primary/50 hover:text-primary"
+                    className="glass glass-hover transition-all hover:scale-110 hover:bg-[#FF0000]/10 hover:border-[#FF0000]/50 hover:text-[#FF0000]"
                     asChild
                   >
                     <a href="https://www.youtube.com/@levanjintcharadze" target="_blank" rel="noopener noreferrer" aria-label="YouTube">
@@ -164,7 +192,7 @@ export function Contact() {
                   <Button 
                     variant="outline" 
                     size="icon"
-                    className="glass glass-hover transition-all hover:scale-110 hover:bg-primary/10 hover:border-primary/50 hover:text-primary"
+                    className="glass glass-hover transition-all hover:scale-110 hover:bg-[#101010]/10 hover:border-[#101010]/50 hover:text-[#101010]"
                     asChild
                   >
                     <a href="https://www.threads.com/@levanjintcharadzedev" target="_blank" rel="noopener noreferrer" aria-label="Threads">

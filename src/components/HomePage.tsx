@@ -4,12 +4,12 @@ import { Skills } from '../components/Skills'
 import { Experience } from '../components/Experience'
 import { Contact } from './Contact'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCode, faCoffee } from '@fortawesome/free-solid-svg-icons'
+import { faCode, faCoffee, faRobot } from '@fortawesome/free-solid-svg-icons'
 import { Toaster } from '@/components/ui/sonner'
 
 export function HomePage() {
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen matte-bg overflow-x-hidden">
       <Navigation />
       
       <main>
@@ -30,6 +30,9 @@ export function HomePage() {
               <FontAwesomeIcon icon={faCode} className="w-4 h-4 text-accent" /> 
               <span>and</span>
               <FontAwesomeIcon icon={faCoffee} className="w-4 h-4 text-accent" />
+              <span className="mx-1">|</span>
+              <FontAwesomeIcon icon={faRobot} className="w-4 h-4 text-accent" />
+              <span>AI-assisted</span>
             </div>
           </div>
         </div>

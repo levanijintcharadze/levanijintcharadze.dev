@@ -2,6 +2,8 @@
 
 This guide provides step-by-step instructions for setting up the SendGrid email integration for the contact form.
 
+Note: SendGrid is optional. Without it, the contact form falls back to opening a prefilled `mailto:` draft in the user's email app.
+
 ## Prerequisites
 
 1. A SendGrid account (free tier available at https://sendgrid.com)

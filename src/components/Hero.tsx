@@ -64,7 +64,7 @@ export function Hero() {
     <section className="min-h-screen flex items-center justify-center relative px-4 pb-12 md:pb-24">
       <div className="absolute inset-0 bg-linear-to-br from-primary/10 via-transparent to-accent/10" />
       <div className="max-w-4xl mx-auto text-center relative z-10">
-  <GlassCard className="float mt-10 mb-16">
+  <GlassCard className="mt-10 mb-16">
           <div className="space-y-6">
             <div className="space-y-4">
               <div className="flex justify-center mb-6">
@@ -161,7 +161,7 @@ export function Hero() {
           <Button
             variant="ghost"
             onClick={scrollToSkills}
-            className="glass glass-hover animate-bounce transition-colors hover:text-foreground">
+            className="glass glass-hover transition-colors hover:text-foreground">
             <FontAwesomeIcon icon={faChevronDown} className="h-6 w-6 transition-colors" />
           </Button>
         </div>

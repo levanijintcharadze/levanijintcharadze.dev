@@ -8,7 +8,8 @@ A modern, responsive portfolio website built with React, Vite, and Tailwind CSS.
 - Responsive layout
 - Modern tech stack (React 19, Vite, Tailwind CSS)
 - Automated deployment to GitHub Pages
-- Contact form with SendGrid email integration
+- Contact form with free mailto fallback
+- Optional SendGrid email integration for direct in-app sending
 
 ## 📦 Getting Started
 
@@ -34,6 +35,11 @@ npm run preview
 ```
 
 ### Email Configuration
+
+The contact form works in two modes:
+
+1. Free mode (default): if the API is unavailable, it opens a prefilled `mailto:` draft in the visitor's email app.
+2. SendGrid mode (optional): sends directly from the site via `/api/send-email`.
 
 The contact form uses SendGrid to send emails. To enable this feature:
 

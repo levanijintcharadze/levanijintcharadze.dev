@@ -151,3 +151,56 @@
 .gradient-text {
   @apply bg-linear-to-br from-primary to-accent bg-clip-text text-transparent;
 }
+
+/* Subtle matte paper texture behind page content */
+.matte-bg {
+  position: relative;
+  isolation: isolate;
+  background-color: var(--background);
+}
+
+.matte-bg::before,
+.matte-bg::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.matte-bg::before {
+  z-index: -2;
+  background:
+    radial-gradient(circle at 18% 14%, oklch(1 0 0 / 0.25) 0 1.2px, transparent 1.2px),
+    radial-gradient(circle at 78% 74%, oklch(0.22 0.01 240 / 0.08) 0 1px, transparent 1px),
+    radial-gradient(circle at 36% 64%, oklch(0.2 0.01 240 / 0.06) 0 0.9px, transparent 0.9px),
+    radial-gradient(circle at 62% 28%, oklch(1 0 0 / 0.22) 0 0.8px, transparent 0.8px);
+  background-size: 170px 170px, 210px 210px, 145px 145px, 185px 185px;
+  opacity: 0.5;
+}
+
+.matte-bg::after {
+  z-index: -1;
+  background:
+    radial-gradient(120% 95% at 10% 0%, oklch(1 0 0 / 0.18), transparent 55%),
+    radial-gradient(120% 95% at 90% 100%, oklch(0.16 0.02 240 / 0.08), transparent 60%);
+  mix-blend-mode: soft-light;
+  opacity: 0.9;
+}
+
+.dark .matte-bg::before {
+  background:
+    radial-gradient(circle at 14% 20%, oklch(1 0 0 / 0.07) 0 1px, transparent 1px),
+    radial-gradient(circle at 76% 68%, oklch(0.95 0.01 160 / 0.05) 0 0.9px, transparent 0.9px),
+    radial-gradient(circle at 38% 62%, oklch(0.08 0.02 160 / 0.22) 0 1.2px, transparent 1.2px),
+    radial-gradient(circle at 64% 32%, oklch(0.1 0.02 160 / 0.16) 0 1.1px, transparent 1.1px);
+  background-size: 170px 170px, 210px 210px, 145px 145px, 185px 185px;
+  opacity: 0.65;
+}
+
+.dark .matte-bg::after {
+  background:
+    radial-gradient(120% 95% at 12% 0%, oklch(0.95 0.01 160 / 0.06), transparent 55%),
+    radial-gradient(120% 95% at 88% 100%, oklch(0.25 0.03 160 / 0.24), transparent 60%);
+  mix-blend-mode: screen;
+  opacity: 0.75;
+}
