@@ -49,9 +49,15 @@ export function Contact() {
         body: JSON.stringify({ name, email, message }),
       })
 
-      const result = await response.json().catch(() => ({} as { error?: string }))
+      const contentType = response.headers.get('content-type') || ''
+      const isJson = contentType.includes('application/json')
+      const result = isJson
+        ? await response
+            .json()
+            .catch(() => ({} as { error?: string; success?: boolean }))
+        : ({} as { error?: string; success?: boolean })
 
-      if (response.ok) {
+      if (response.ok && result.success) {
         toast.success('Message sent successfully!', {
           description: 'Thank you for reaching out. I\'ll get back to you soon.',
         })
