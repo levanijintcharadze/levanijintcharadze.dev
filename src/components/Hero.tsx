@@ -14,8 +14,24 @@ export function Hero() {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isDialogOpen, setIsDialogOpen] = useState(false)
 
+  const contactEmail = 'levanijincharadze@outlook.com'
+
   const scrollToSkills = () => {
     document.getElementById('skills')?.scrollIntoView({ behavior: 'smooth' })
+  }
+
+  const openMailtoFallback = (name: string, email: string, message: string) => {
+    const subject = `Portfolio Contact from ${name || 'Website Visitor'}`
+    const body = [
+      `Name: ${name}`,
+      `Email: ${email}`,
+      '',
+      'Message:',
+      message,
+    ].join('\n')
+
+    const mailtoUrl = `mailto:${contactEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`
+    window.location.href = mailtoUrl
   }
 
   const handleEmailSubmit: React.FormEventHandler<HTMLFormElement> = async (e) => {
@@ -37,23 +53,32 @@ export function Hero() {
         body: JSON.stringify({ name, email, message }),
       })
 
-      const result = await response.json()
+      const contentType = response.headers.get('content-type') || ''
+      const isJson = contentType.includes('application/json')
+      const result = isJson
+        ? await response.json().catch(() => ({} as { error?: string; success?: boolean }))
+        : ({} as { error?: string; success?: boolean })
 
-      if (response.ok) {
+      if (response.ok && result.success) {
         toast.success('Message sent successfully!', {
           description: 'Thank you for reaching out. I\'ll get back to you soon.',
         })
         form.reset()
         setIsDialogOpen(false)
       } else {
-        toast.error('Failed to send message', {
-          description: result.error || 'Please try again later or contact me directly.',
+        openMailtoFallback(name, email, message)
+        toast.info('Opening your email app', {
+          description:
+            result.error ||
+            'Direct API sending is unavailable right now, so a prefilled draft was created.',
         })
       }
     } catch (error) {
       console.error('Error sending email:', error)
-      toast.error('Failed to send message', {
-        description: 'Please try again later or contact me directly.',
+      openMailtoFallback(name, email, message)
+      toast.info('Opening your email app', {
+        description:
+          'Direct API sending is unavailable right now, so a prefilled draft was created.',
       })
     } finally {
       setIsSubmitting(false)

@@ -16,6 +16,8 @@ export default async function handler(
   req: VercelRequest,
   res: VercelResponse
 ) {
+  res.setHeader('Content-Type', 'application/json; charset=utf-8')
+
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' })
   }
@@ -26,14 +28,27 @@ export default async function handler(
     return res.status(500).json({ error: 'Server configuration error' })
   }
 
-  const fromEmail = process.env.RESEND_FROM_EMAIL
-  if (!fromEmail) {
-    console.error('RESEND_FROM_EMAIL is not set')
-    return res.status(500).json({ error: 'Server configuration error' })
+  const fromEmail =
+    (process.env.RESEND_FROM_EMAIL || '').trim() || 'Portfolio <onboarding@resend.dev>'
+  if (!process.env.RESEND_FROM_EMAIL) {
+    console.warn('RESEND_FROM_EMAIL is not set; falling back to onboarding@resend.dev')
   }
 
   const toEmail = process.env.CONTACT_EMAIL || 'levanijincharadze@outlook.com'
-  const body = req.body as Partial<Record<'name' | 'email' | 'message', unknown>>
+  const parsedBody = (() => {
+    if (typeof req.body === 'string') {
+      try {
+        return JSON.parse(req.body) as unknown
+      } catch {
+        return {}
+      }
+    }
+
+    if (req.body && typeof req.body === 'object') return req.body as unknown
+    return {}
+  })()
+
+  const body = parsedBody as Partial<Record<'name' | 'email' | 'message', unknown>>
   const name = typeof body.name === 'string' ? body.name.trim() : ''
   const email = typeof body.email === 'string' ? body.email.trim() : ''
   const message = typeof body.message === 'string' ? body.message.trim() : ''
@@ -46,6 +61,8 @@ export default async function handler(
     return res.status(400).json({ error: 'Invalid email address' })
   }
 
+  const safeNameForSubject = name.replace(/[\r\n]+/g, ' ').trim()
+
   const escapedName = escapeHtml(name)
   const escapedEmail = escapeHtml(email)
   const escapedMessage = escapeHtml(message)
@@ -56,8 +73,8 @@ export default async function handler(
       to: [toEmail],
       from: fromEmail,
       replyTo: email,
-      subject: `Portfolio Contact from ${escapedName}`,
-      text: `Name: ${escapedName}\nEmail: ${escapedEmail}\n\nMessage:\n${escapedMessage}`,
+      subject: `Portfolio Contact from ${safeNameForSubject}`,
+      text: `Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`,
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
           <h2 style="color: #333;">New Contact from Portfolio</h2>
