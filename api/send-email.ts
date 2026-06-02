@@ -20,19 +20,22 @@ export default async function handler(
     return res.status(405).json({ error: 'Method not allowed' })
   }
 
-  const apiKey = process.env.RESEND_API_KEY
+  const apiKey = process.env.RESEND_API_KEY || process.env.SENDGRID_API_KEY
   if (!apiKey) {
-    console.error('RESEND_API_KEY is not set')
+    console.error('RESEND_API_KEY (or legacy SENDGRID_API_KEY) is not set')
     return res.status(500).json({ error: 'Server configuration error' })
   }
 
-  const fromEmail = process.env.RESEND_FROM_EMAIL
+  const fromEmail = process.env.RESEND_FROM_EMAIL || process.env.SENDGRID_FROM_EMAIL
   if (!fromEmail) {
-    console.error('RESEND_FROM_EMAIL is not set')
+    console.error('RESEND_FROM_EMAIL (or legacy SENDGRID_FROM_EMAIL) is not set')
     return res.status(500).json({ error: 'Server configuration error' })
   }
 
-  const toEmail = process.env.CONTACT_EMAIL || 'levanijincharadze@outlook.com'
+  const toEmail =
+    process.env.CONTACT_EMAIL ||
+    process.env.SENDGRID_TO_EMAIL ||
+    'levanijincharadze@outlook.com'
   const body = req.body as Partial<Record<'name' | 'email' | 'message', unknown>>
   const name = typeof body.name === 'string' ? body.name.trim() : ''
   const email = typeof body.email === 'string' ? body.email.trim() : ''

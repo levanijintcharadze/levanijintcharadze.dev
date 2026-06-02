@@ -35,6 +35,7 @@ CONTACT_EMAIL=levanijincharadze@outlook.com
 ```
 
 `RESEND_FROM_EMAIL` must use the verified domain from Step 2.
+Legacy aliases are also accepted by the API route: `SENDGRID_API_KEY`, `SENDGRID_FROM_EMAIL`, and `SENDGRID_TO_EMAIL`.
 
 ## Step 4: Deploy and Test
 

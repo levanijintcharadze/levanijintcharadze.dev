@@ -60,6 +60,7 @@ The contact form uses Resend to send emails. To enable this feature:
    - `RESEND_API_KEY` - Your Resend API key
    - `RESEND_FROM_EMAIL` - A sender on your verified domain (e.g. `Your Name <contact@yourdomain.com>`)
    - `CONTACT_EMAIL` - Email address where you want to receive messages (defaults to levanijincharadze@outlook.com)
+   - Legacy aliases are also supported: `SENDGRID_API_KEY`, `SENDGRID_FROM_EMAIL`, `SENDGRID_TO_EMAIL`
 
    For local development, create a `.env` file in the root directory:
    ```
