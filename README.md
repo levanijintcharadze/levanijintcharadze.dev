@@ -61,6 +61,8 @@ The contact form uses Resend to send emails. To enable this feature:
    - `RESEND_FROM_EMAIL` - A sender on your verified domain (e.g. `Your Name <contact@yourdomain.com>`)
    - `CONTACT_EMAIL` - Email address where you want to receive messages (defaults to levanijincharadze@outlook.com)
    - Legacy aliases are also supported: `SENDGRID_API_KEY`, `SENDGRID_FROM_EMAIL`, `SENDGRID_TO_EMAIL`
+   
+   If you see `RESEND_FROM_EMAIL (or legacy SENDGRID_FROM_EMAIL) is not set` in Vercel function logs, add `RESEND_FROM_EMAIL` in **Vercel → Project → Settings → Environment Variables** (for the relevant environment) and redeploy.
 
    For local development, create a `.env` file in the root directory:
    ```
