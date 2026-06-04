@@ -23,13 +23,17 @@ export default async function handler(
   const apiKey = process.env.RESEND_API_KEY || process.env.SENDGRID_API_KEY
   if (!apiKey) {
     console.error('RESEND_API_KEY (or legacy SENDGRID_API_KEY) is not set')
-    return res.status(500).json({ error: 'Server configuration error' })
+    return res.status(500).json({
+      error: 'Server configuration error: RESEND_API_KEY is not set',
+    })
   }
 
   const fromEmail = process.env.RESEND_FROM_EMAIL || process.env.SENDGRID_FROM_EMAIL
   if (!fromEmail) {
     console.error('RESEND_FROM_EMAIL (or legacy SENDGRID_FROM_EMAIL) is not set')
-    return res.status(500).json({ error: 'Server configuration error' })
+    return res.status(500).json({
+      error: 'Server configuration error: RESEND_FROM_EMAIL is not set',
+    })
   }
 
   const toEmail =
