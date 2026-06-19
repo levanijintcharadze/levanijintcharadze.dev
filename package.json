@@ -14,7 +14,7 @@
     "dependencies": {
         "@fortawesome/free-brands-svg-icons": "^6.7.2",
         "@fortawesome/free-solid-svg-icons": "^6.7.2",
-        "@fortawesome/react-fontawesome": "^0.2.6",
+        "@fortawesome/react-fontawesome": "^3.1.0",
         "@github/spark": "^0.41.23",
         "@heroicons/react": "^2.2.0",
         "@hookform/resolvers": "^4.1.3",
