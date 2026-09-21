@@ -1,6 +1,7 @@
 import { createHash } from 'node:crypto'
 import type { VercelRequest, VercelResponse } from '@vercel/node'
 import { Resend } from 'resend'
+import { isValidEmail } from './send-email-utils.mjs'
 
 const escapeHtml = (value: string) =>
   value
@@ -9,62 +10,6 @@ const escapeHtml = (value: string) =>
     .replace(/>/g, '&gt;')
     .replace(/"/g, '&quot;')
     .replace(/'/g, '&#039;')
-
-const isValidEmail = (value: string) => {
-  if (!value || value.length > 254 || value.includes(' ')) {
-    return false
-  }
-
-  const parts = value.split('@')
-  if (parts.length !== 2) {
-    return false
-  }
-
-  const [localPart, domain] = parts
-  if (
-    !localPart ||
-    !domain ||
-    !domain.includes('.') ||
-    localPart.startsWith('.') ||
-    localPart.endsWith('.') ||
-    localPart.includes('..')
-  ) {
-    return false
-  }
-
-  for (const character of localPart) {
-    const isLetterOrDigit =
-      (character >= 'a' && character <= 'z') ||
-      (character >= 'A' && character <= 'Z') ||
-      (character >= '0' && character <= '9')
-
-    const isAllowedSymbol = `!#$%&'*+/=?^_\`{|}~.-`.includes(character)
-
-    if (!isLetterOrDigit && !isAllowedSymbol) {
-      return false
-    }
-  }
-
-  const domainLabels = domain.split('.')
-  return domainLabels.every((label) => {
-    if (!label || label.startsWith('-') || label.endsWith('-')) {
-      return false
-    }
-
-    for (const character of label) {
-      const isLetterOrDigit =
-        (character >= 'a' && character <= 'z') ||
-        (character >= 'A' && character <= 'Z') ||
-        (character >= '0' && character <= '9')
-
-      if (!isLetterOrDigit && character !== '-') {
-        return false
-      }
-    }
-
-    return true
-  })
-}
 
 export default async function handler(
   req: VercelRequest,

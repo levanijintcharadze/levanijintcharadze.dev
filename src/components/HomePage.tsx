@@ -270,7 +270,7 @@ export function HomePage() {
                         <div className="flex min-w-0 items-center gap-3 text-left">
                           <img
                             src={experience.logoSrc}
-                            alt={`${experience.company} logo`}
+                            alt=""
                             className="h-11 w-11 shrink-0 rounded-2xl border border-white/30 object-cover shadow-sm dark:border-white/10"
                           />
                           <div className="min-w-0">
