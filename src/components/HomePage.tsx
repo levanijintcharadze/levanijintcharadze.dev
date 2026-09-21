@@ -124,6 +124,7 @@ export function HomePage() {
     const name = String(data.get('name') || '')
     const email = String(data.get('email') || '')
     const message = String(data.get('message') || '')
+    const website = String(data.get('website') || '')
 
     setIsSubmitting(true)
 
@@ -133,10 +134,13 @@ export function HomePage() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ name, email, message }),
+        body: JSON.stringify({ name, email, message, website }),
       })
 
-      const result = await response.json().catch(() => ({} as { error?: string }))
+      const result =
+        response.status === 204 || !response.headers.get('content-type')?.includes('application/json')
+          ? {}
+          : await response.json().catch(() => ({} as { error?: string }))
 
       if (response.ok) {
         toast.success('Message sent successfully!', {
@@ -281,6 +285,16 @@ export function HomePage() {
                         </DialogDescription>
                       </DialogHeader>
                       <form className="space-y-4 text-left" onSubmit={handleEmailSubmit}>
+                        <div className="hidden" aria-hidden="true">
+                          <Label htmlFor="website">Website</Label>
+                          <Input
+                            id="website"
+                            name="website"
+                            tabIndex={-1}
+                            autoComplete="off"
+                            disabled={isSubmitting}
+                          />
+                        </div>
                         <div className="grid gap-2">
                           <Label htmlFor="name">Name</Label>
                           <Input id="name" name="name" placeholder="Your name" required disabled={isSubmitting} />

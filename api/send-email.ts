@@ -40,10 +40,15 @@ export default async function handler(
     process.env.CONTACT_EMAIL ||
     process.env.SENDGRID_TO_EMAIL ||
     'levanijincharadze@outlook.com'
-  const body = req.body as Partial<Record<'name' | 'email' | 'message', unknown>>
+  const body = req.body as Partial<Record<'name' | 'email' | 'message' | 'website', unknown>>
   const name = typeof body.name === 'string' ? body.name.trim() : ''
   const email = typeof body.email === 'string' ? body.email.trim() : ''
   const message = typeof body.message === 'string' ? body.message.trim() : ''
+  const website = typeof body.website === 'string' ? body.website.trim() : ''
+
+  if (website) {
+    return res.status(400).json({ error: 'Spam detected' })
+  }
 
   if (!name || !email || !message) {
     return res.status(400).json({ error: 'Missing required fields' })
