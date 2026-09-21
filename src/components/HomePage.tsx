@@ -107,6 +107,7 @@ const socialLinks: LinkItem[] = [
 export function HomePage() {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isDialogOpen, setIsDialogOpen] = useState(false)
+  const [showProfileImage, setShowProfileImage] = useState(true)
 
   const contactEmail = 'levanijincharadze@outlook.com'
 
@@ -149,8 +150,7 @@ export function HomePage() {
           description: result.error || 'Direct sending is unavailable right now, so a prefilled draft was created.',
         })
       }
-    } catch (error) {
-      console.error('Error sending email:', error)
+    } catch {
       openMailtoFallback(name, email, message)
       toast.info('Opening your email app', {
         description: 'Direct sending is unavailable right now, so a prefilled draft was created.',
@@ -180,11 +180,18 @@ export function HomePage() {
         <main className="flex flex-1 flex-col items-center justify-center">
           <section className="liquid-panel w-full rounded-[2rem] p-5 sm:p-8">
             <div className="flex flex-col items-center text-center">
-              <img
-                src="/profile.jpg"
-                alt="Levan Jintcharadze"
-                className="mb-5 h-24 w-24 rounded-full border border-white/40 object-cover shadow-2xl shadow-primary/15 sm:h-28 sm:w-28"
-              />
+              {showProfileImage ? (
+                <img
+                  src="/profile.jpg"
+                  alt="Levan Jintcharadze"
+                  className="mb-5 h-24 w-24 rounded-full border border-white/40 object-cover shadow-2xl shadow-primary/15 sm:h-28 sm:w-28"
+                  onError={() => setShowProfileImage(false)}
+                />
+              ) : (
+                <div className="mb-5 flex h-24 w-24 items-center justify-center rounded-full border border-white/40 bg-white/45 text-3xl font-semibold text-foreground shadow-2xl shadow-primary/15 dark:bg-white/10 sm:h-28 sm:w-28">
+                  LJ
+                </div>
+              )}
               <span className="mb-4 inline-flex items-center gap-2 rounded-full border border-white/30 bg-white/30 px-4 py-1 text-xs font-medium text-foreground/80 backdrop-blur-lg dark:border-white/10 dark:bg-white/10">
                 <FontAwesomeIcon icon={faCode} className="text-primary" />
                 Clean builds. Cloud-native systems. Human-centered products.
