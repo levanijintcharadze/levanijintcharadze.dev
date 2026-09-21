@@ -180,8 +180,17 @@ const experiences = [
   },
 ]
 
+const getCompanyInitials = (company: string) =>
+  company
+    .split(/[\s.]+/)
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((part) => part[0]?.toUpperCase() ?? '')
+    .join('')
+
 export function HomePage() {
   const [showProfileImage, setShowProfileImage] = useState(true)
+  const [hiddenExperienceLogos, setHiddenExperienceLogos] = useState<Record<string, boolean>>({})
 
   return (
     <div className="liquid-shell min-h-screen overflow-hidden px-4 py-6 sm:px-6 lg:px-8">
@@ -246,7 +255,7 @@ export function HomePage() {
                     target={link.external ? '_blank' : undefined}
                     rel={link.external ? 'noopener noreferrer' : undefined}
                     aria-label={link.external ? `${link.label} (opens in a new tab)` : link.label}
-                    className="group flex items-center justify-between gap-4 rounded-[1.5rem] border border-white/25 bg-white/40 px-4 py-4 text-left shadow-lg shadow-black/5 backdrop-blur-2xl transition duration-300 hover:-translate-y-0.5 hover:bg-white/55 dark:border-white/10 dark:bg-white/[0.08] dark:hover:bg-white/[0.12] sm:px-5"
+                    className="group flex items-center justify-between gap-4 rounded-[1.5rem] border border-white/25 bg-white/40 px-4 py-4 text-left shadow-lg shadow-black/5 backdrop-blur-2xl transition duration-300 hover:-translate-y-0.5 hover:bg-white/55 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/70 focus-visible:ring-offset-2 focus-visible:ring-offset-background dark:border-white/10 dark:bg-white/[0.08] dark:hover:bg-white/[0.12] sm:px-5"
                   >
                     <div className="flex min-w-0 items-center gap-4">
                       <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-white/60 text-lg text-primary shadow-sm dark:bg-white/10">
@@ -299,11 +308,23 @@ export function HomePage() {
                     >
                       <AccordionTrigger className="py-4 hover:no-underline">
                         <div className="flex min-w-0 items-center gap-3 text-left">
-                          <img
-                            src={experience.logoSrc}
-                            alt={`${experience.company} logo`}
-                            className="h-11 w-11 shrink-0 rounded-2xl border border-white/30 object-cover shadow-sm dark:border-white/10"
-                          />
+                          {hiddenExperienceLogos[experience.value] ? (
+                            <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl border border-white/30 bg-white/45 text-xs font-semibold text-foreground shadow-sm dark:border-white/10 dark:bg-white/10">
+                              {getCompanyInitials(experience.company)}
+                            </div>
+                          ) : (
+                            <img
+                              src={experience.logoSrc}
+                              alt={`${experience.company} logo`}
+                              className="h-11 w-11 shrink-0 rounded-2xl border border-white/30 object-cover shadow-sm dark:border-white/10"
+                              onError={() =>
+                                setHiddenExperienceLogos((current) => ({
+                                  ...current,
+                                  [experience.value]: true,
+                                }))
+                              }
+                            />
+                          )}
                           <div className="min-w-0">
                             <p className="truncate font-medium text-foreground">{experience.title}</p>
                             <p className="truncate text-sm text-muted-foreground">
@@ -342,7 +363,7 @@ export function HomePage() {
                       key={link.label}
                       variant="outline"
                       size="icon"
-                      className={`glass glass-hover size-11 rounded-2xl transition-all hover:scale-110 ${link.hoverClassName ?? ''}`}
+                      className={`glass glass-hover size-11 rounded-2xl transition-all hover:scale-110 focus-visible:ring-2 focus-visible:ring-primary/70 focus-visible:ring-offset-2 focus-visible:ring-offset-background ${link.hoverClassName ?? ''}`}
                       asChild
                     >
                       <a

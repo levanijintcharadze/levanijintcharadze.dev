@@ -49,6 +49,32 @@ test('returns 429 after repeated submissions from the same client', async () => 
   assert.equal(sendCalls, 5)
 })
 
+test('does not count invalid submissions against the rate limit', async () => {
+  let sendCalls = 0
+  const sendEmail = async () => {
+    sendCalls += 1
+    return { data: { id: `message-${sendCalls}` }, error: null }
+  }
+
+  for (let index = 0; index < 3; index += 1) {
+    const invalidResult = await handleContactSubmission({
+      ...validPayload,
+      email: 'invalid-email',
+      sendEmail,
+    })
+
+    assert.equal(invalidResult.status, 400)
+  }
+
+  const validResult = await handleContactSubmission({
+    ...validPayload,
+    sendEmail,
+  })
+
+  assert.equal(validResult.status, 200)
+  assert.equal(sendCalls, 1)
+})
+
 test('short-circuits honeypot submissions without sending email', async () => {
   let sendCalls = 0
 

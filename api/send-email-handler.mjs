@@ -63,15 +63,6 @@ export async function handleContactSubmission({
     }
   }
 
-  if (isRateLimited(clientKey)) {
-    return {
-      status: 429,
-      body: {
-        error: 'Too many requests. Please try again later.',
-      },
-    }
-  }
-
   if (!name || !email || !message) {
     return {
       status: 400,
@@ -83,6 +74,15 @@ export async function handleContactSubmission({
     return {
       status: 400,
       body: { error: 'Invalid email address' },
+    }
+  }
+
+  if (isRateLimited(clientKey)) {
+    return {
+      status: 429,
+      body: {
+        error: 'Too many requests. Please try again later.',
+      },
     }
   }
 
