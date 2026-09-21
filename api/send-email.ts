@@ -1,19 +1,7 @@
 import { createHash } from 'node:crypto'
 import type { VercelRequest, VercelResponse } from '@vercel/node'
 import { Resend } from 'resend'
-import { isValidEmail } from './send-email-utils.mjs'
-
-const RATE_LIMIT_WINDOW_MS = 10 * 60 * 1000
-const RATE_LIMIT_MAX_REQUESTS = 5
-const requestLog = new Map<string, number[]>()
-
-const escapeHtml = (value: string) =>
-  value
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#039;')
+import { handleContactSubmission } from './send-email-handler.mjs'
 
 const getClientKey = (req: VercelRequest) => {
   const forwardedFor = req.headers['x-forwarded-for']
@@ -25,18 +13,6 @@ const getClientKey = (req: VercelRequest) => {
         : req.socket.remoteAddress
 
   return ip || 'unknown'
-}
-
-const isRateLimited = (key: string) => {
-  const now = Date.now()
-  const recentRequests = (requestLog.get(key) || []).filter(
-    (timestamp) => now - timestamp < RATE_LIMIT_WINDOW_MS
-  )
-
-  recentRequests.push(now)
-  requestLog.set(key, recentRequests)
-
-  return recentRequests.length > RATE_LIMIT_MAX_REQUESTS
 }
 
 export default async function handler(
@@ -72,76 +48,58 @@ export default async function handler(
   const email = typeof body.email === 'string' ? body.email.trim() : ''
   const message = typeof body.message === 'string' ? body.message.trim() : ''
   const website = typeof body.website === 'string' ? body.website.trim() : ''
-  const clientKey = getClientKey(req)
-
-  if (isRateLimited(clientKey)) {
-    return res.status(429).json({ error: 'Too many requests. Please try again later.' })
-  }
-
-  if (website) {
-    return res.status(200).json({
-      success: true,
-      message: 'Email sent successfully',
-    })
-  }
-
-  if (!name || !email || !message) {
-    return res.status(400).json({ error: 'Missing required fields' })
-  }
-
-  if (!isValidEmail(email)) {
-    return res.status(400).json({ error: 'Invalid email address' })
-  }
-
-  const escapedName = escapeHtml(name)
-  const escapedEmail = escapeHtml(email)
-  const escapedMessage = escapeHtml(message)
   const resend = new Resend(apiKey)
   const idempotencyKey = `contact-form/${createHash('sha256').update(`${name}|${email}|${message}`).digest('hex')}`
-  const { data, error } = await resend.emails.send(
-    {
-      to: [toEmail],
-      from: fromEmail,
-      replyTo: email,
-      subject: `Portfolio Contact from ${escapedName}`,
-      text: `Name: ${escapedName}\nEmail: ${escapedEmail}\n\nMessage:\n${escapedMessage}`,
-      html: `
-        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-          <h2 style="color: #333;">New Contact from Portfolio</h2>
-          <div style="background-color: #f5f5f5; padding: 20px; border-radius: 5px; margin: 20px 0;">
-            <p><strong>Name:</strong> ${escapedName}</p>
-            <p><strong>Email:</strong> <a href="mailto:${escapedEmail}">${escapedEmail}</a></p>
-          </div>
-          <div style="background-color: #fff; padding: 20px; border: 1px solid #ddd; border-radius: 5px;">
-            <h3 style="color: #555; margin-top: 0;">Message:</h3>
-            <p style="white-space: pre-wrap;">${escapedMessage}</p>
-          </div>
-        </div>
-      `,
+  const result = await handleContactSubmission({
+    clientKey: getClientKey(req),
+    name,
+    email,
+    message,
+    website,
+    toEmail,
+    fromEmail,
+    idempotencyKey,
+    includeErrorDetails: process.env.NODE_ENV === 'development',
+    sendEmail: async ({
+      toEmail: recipient,
+      fromEmail: sender,
+      email: replyTo,
+      escapedName,
+      escapedEmail,
+      escapedMessage,
+      idempotencyKey: dedupeKey,
+    }) => {
+      const response = await resend.emails.send(
+        {
+          to: [recipient],
+          from: sender,
+          replyTo,
+          subject: `Portfolio Contact from ${escapedName}`,
+          text: `Name: ${escapedName}\nEmail: ${escapedEmail}\n\nMessage:\n${escapedMessage}`,
+          html: `
+            <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+              <h2 style="color: #333;">New Contact from Portfolio</h2>
+              <div style="background-color: #f5f5f5; padding: 20px; border-radius: 5px; margin: 20px 0;">
+                <p><strong>Name:</strong> ${escapedName}</p>
+                <p><strong>Email:</strong> <a href="mailto:${escapedEmail}">${escapedEmail}</a></p>
+              </div>
+              <div style="background-color: #fff; padding: 20px; border: 1px solid #ddd; border-radius: 5px;">
+                <h3 style="color: #555; margin-top: 0;">Message:</h3>
+                <p style="white-space: pre-wrap;">${escapedMessage}</p>
+              </div>
+            </div>
+          `,
+        },
+        { idempotencyKey: dedupeKey }
+      )
+
+      if (response.error) {
+        console.error('Error sending email with Resend:', response.error)
+      }
+
+      return response
     },
-    { idempotencyKey }
-  )
-
-  if (error) {
-    const statusCode =
-      typeof error === 'object' &&
-      error &&
-      'statusCode' in error &&
-      typeof error.statusCode === 'number'
-        ? error.statusCode
-        : 500
-
-    console.error('Error sending email with Resend:', error)
-
-    return res.status(statusCode).json({
-      error: 'Failed to send email',
-      details: process.env.NODE_ENV === 'development' ? error.message : undefined,
-    })
-  }
-
-  return res.status(200).json({
-    success: true,
-    message: 'Email sent successfully',
-    id: data?.id,
   })
+
+  return res.status(result.status).json(result.body)
 }
