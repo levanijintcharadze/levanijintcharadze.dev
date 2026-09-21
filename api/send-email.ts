@@ -21,8 +21,28 @@ const isValidEmail = (value: string) => {
   }
 
   const [localPart, domain] = parts
-  if (!localPart || !domain || !domain.includes('.')) {
+  if (
+    !localPart ||
+    !domain ||
+    !domain.includes('.') ||
+    localPart.startsWith('.') ||
+    localPart.endsWith('.') ||
+    localPart.includes('..')
+  ) {
     return false
+  }
+
+  for (const character of localPart) {
+    const isLetterOrDigit =
+      (character >= 'a' && character <= 'z') ||
+      (character >= 'A' && character <= 'Z') ||
+      (character >= '0' && character <= '9')
+
+    const isAllowedSymbol = `!#$%&'*+/=?^_\`{|}~.-`.includes(character)
+
+    if (!isLetterOrDigit && !isAllowedSymbol) {
+      return false
+    }
   }
 
   const domainLabels = domain.split('.')
@@ -81,7 +101,10 @@ export default async function handler(
   const website = typeof body.website === 'string' ? body.website.trim() : ''
 
   if (website) {
-    return res.status(400).json({ error: 'Spam detected' })
+    return res.status(200).json({
+      success: true,
+      message: 'Email sent successfully',
+    })
   }
 
   if (!name || !email || !message) {
