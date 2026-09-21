@@ -22,6 +22,7 @@ import {
 } from '@fortawesome/free-brands-svg-icons'
 import { ThemeToggle } from './ThemeToggle'
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion'
+import { Button } from '@/components/ui/button'
 
 type LinkItem = {
   href?: string
@@ -29,6 +30,8 @@ type LinkItem = {
   description: string
   icon: IconDefinition
   external?: boolean
+  ariaLabel?: string
+  hoverClassName?: string
 }
 
 const featuredLinks: LinkItem[] = [
@@ -68,6 +71,8 @@ const socialLinks: LinkItem[] = [
     description: 'Thoughts and updates',
     icon: faXTwitter,
     external: true,
+    ariaLabel: 'X (opens in a new tab)',
+    hoverClassName: 'hover:bg-[#111111]/10 hover:border-[#111111]/50 hover:text-[#111111]',
   },
   {
     href: 'https://bsky.app/profile/levanjintcharadze.dev',
@@ -75,6 +80,8 @@ const socialLinks: LinkItem[] = [
     description: 'Open conversations',
     icon: faBluesky,
     external: true,
+    ariaLabel: 'Bluesky (opens in a new tab)',
+    hoverClassName: 'hover:bg-[#1185FE]/10 hover:border-[#1185FE]/50 hover:text-[#1185FE]',
   },
   {
     href: 'https://www.instagram.com/levanjintcharadzedev/',
@@ -82,6 +89,8 @@ const socialLinks: LinkItem[] = [
     description: 'Visual snapshots',
     icon: faInstagram,
     external: true,
+    ariaLabel: 'Instagram (opens in a new tab)',
+    hoverClassName: 'hover:bg-[#E4405F]/10 hover:border-[#E4405F]/50 hover:text-[#E4405F]',
   },
   {
     href: 'https://www.threads.com/@levanjintcharadzedev',
@@ -89,6 +98,8 @@ const socialLinks: LinkItem[] = [
     description: 'Short-form posts',
     icon: faThreads,
     external: true,
+    ariaLabel: 'Threads (opens in a new tab)',
+    hoverClassName: 'hover:bg-[#101010]/10 hover:border-[#101010]/50 hover:text-[#101010]',
   },
   {
     href: 'https://www.facebook.com/levanjintcharadzedev/',
@@ -96,6 +107,8 @@ const socialLinks: LinkItem[] = [
     description: 'Community and updates',
     icon: faFacebook,
     external: true,
+    ariaLabel: 'Facebook (opens in a new tab)',
+    hoverClassName: 'hover:bg-[#1877F2]/10 hover:border-[#1877F2]/50 hover:text-[#1877F2]',
   },
   {
     href: 'https://www.tiktok.com/@levanjintcharadze0',
@@ -103,6 +116,8 @@ const socialLinks: LinkItem[] = [
     description: 'Short videos and snippets',
     icon: faTiktok,
     external: true,
+    ariaLabel: 'TikTok (opens in a new tab)',
+    hoverClassName: 'hover:bg-[#EE1D52]/10 hover:border-[#EE1D52]/50 hover:text-[#EE1D52]',
   },
   {
     href: 'https://www.youtube.com/@levanjintcharadze',
@@ -110,6 +125,8 @@ const socialLinks: LinkItem[] = [
     description: 'Long-form content',
     icon: faYoutube,
     external: true,
+    ariaLabel: 'YouTube (opens in a new tab)',
+    hoverClassName: 'hover:bg-[#FF0000]/10 hover:border-[#FF0000]/50 hover:text-[#FF0000]',
   },
 ]
 
@@ -305,23 +322,26 @@ export function HomePage() {
                   <p className="font-medium text-foreground">Socials</p>
                   <p className="text-sm text-muted-foreground">A few more places to find me.</p>
                 </div>
-                <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
+                <div className="flex flex-wrap items-center gap-3">
                   {socialLinks.map((link) => (
-                    <a
+                    <Button
                       key={link.label}
-                      href={link.href}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      aria-label={`${link.label} (opens in a new tab)`}
-                      className="rounded-[1.25rem] border border-white/20 bg-white/35 px-3 py-3 text-left transition duration-300 hover:-translate-y-0.5 hover:bg-white/50 dark:border-white/10 dark:bg-white/[0.08] dark:hover:bg-white/[0.12]"
+                      variant="outline"
+                      size="icon"
+                      className={`glass glass-hover size-11 rounded-2xl transition-all hover:scale-110 ${link.hoverClassName ?? ''}`}
+                      asChild
                     >
-                      <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-2xl bg-white/65 text-primary shadow-sm dark:bg-white/10">
-                        <FontAwesomeIcon icon={link.icon} />
-                      </div>
-                      <p className="font-medium text-foreground">{link.label}</p>
-                      <p className="mt-1 text-xs text-muted-foreground">{link.description}</p>
-                      <span className="sr-only">Opens in a new tab</span>
-                    </a>
+                      <a
+                        href={link.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label={link.ariaLabel ?? `${link.label} (opens in a new tab)`}
+                        title={link.label}
+                      >
+                        <FontAwesomeIcon icon={link.icon} className="h-5 w-5" />
+                        <span className="sr-only">{link.label}</span>
+                      </a>
+                    </Button>
                   ))}
                 </div>
               </div>
