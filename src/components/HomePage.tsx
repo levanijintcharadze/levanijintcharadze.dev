@@ -3,12 +3,12 @@ import type { IconDefinition } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
   faArrowRight,
+  faCode,
   faEnvelope,
   faFileArrowDown,
   faGlobe,
   faLocationDot,
   faPaperPlane,
-  faSparkles,
 } from '@fortawesome/free-solid-svg-icons'
 import {
   faBluesky,
@@ -186,7 +186,7 @@ export function HomePage() {
                 className="mb-5 h-24 w-24 rounded-full border border-white/40 object-cover shadow-2xl shadow-primary/15 sm:h-28 sm:w-28"
               />
               <span className="mb-4 inline-flex items-center gap-2 rounded-full border border-white/30 bg-white/30 px-4 py-1 text-xs font-medium text-foreground/80 backdrop-blur-lg dark:border-white/10 dark:bg-white/10">
-                <FontAwesomeIcon icon={faSparkles} className="text-primary" />
+                <FontAwesomeIcon icon={faCode} className="text-primary" />
                 Clean builds. Cloud-native systems. Human-centered products.
               </span>
               <h1 className="text-4xl font-semibold tracking-tight text-foreground sm:text-5xl">
