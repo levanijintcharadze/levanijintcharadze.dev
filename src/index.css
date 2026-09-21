@@ -204,3 +204,102 @@
   mix-blend-mode: screen;
   opacity: 0.75;
 }
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at top, oklch(0.98 0.03 230), transparent 34%),
+    radial-gradient(circle at 20% 20%, oklch(0.9 0.07 230 / 0.45), transparent 28%),
+    radial-gradient(circle at 80% 0%, oklch(0.92 0.09 170 / 0.35), transparent 30%),
+    linear-gradient(180deg, oklch(0.99 0.01 240), oklch(0.95 0.02 235));
+}
+
+.dark body {
+  background:
+    radial-gradient(circle at top, oklch(0.24 0.05 210 / 0.55), transparent 34%),
+    radial-gradient(circle at 20% 20%, oklch(0.32 0.08 220 / 0.35), transparent 26%),
+    radial-gradient(circle at 80% 0%, oklch(0.28 0.09 170 / 0.28), transparent 30%),
+    linear-gradient(180deg, oklch(0.12 0.03 220), oklch(0.08 0.02 200));
+}
+
+.liquid-shell {
+  position: relative;
+  isolation: isolate;
+}
+
+.liquid-panel {
+  background: linear-gradient(180deg, oklch(1 0 0 / 0.42), oklch(1 0 0 / 0.2));
+  border: 1px solid oklch(1 0 0 / 0.38);
+  box-shadow:
+    0 24px 80px oklch(0.25 0.02 240 / 0.12),
+    inset 0 1px 0 oklch(1 0 0 / 0.4);
+  backdrop-filter: blur(30px);
+}
+
+.dark .liquid-panel {
+  background: linear-gradient(180deg, oklch(0.22 0.03 220 / 0.55), oklch(0.16 0.02 220 / 0.35));
+  border-color: oklch(1 0 0 / 0.08);
+  box-shadow:
+    0 28px 90px oklch(0.02 0 0 / 0.45),
+    inset 0 1px 0 oklch(1 0 0 / 0.08);
+}
+
+@keyframes liquid-float {
+  0%, 100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(0, -18px, 0) scale(1.06);
+  }
+}
+
+.liquid-orb {
+  position: absolute;
+  border-radius: 9999px;
+  filter: blur(28px);
+  opacity: 0.65;
+  animation: liquid-float 10s ease-in-out infinite;
+}
+
+.liquid-orb-1 {
+  top: 6%;
+  left: 8%;
+  width: 12rem;
+  height: 12rem;
+  background: oklch(0.84 0.08 230 / 0.45);
+}
+
+.liquid-orb-2 {
+  right: 4%;
+  top: 18%;
+  width: 16rem;
+  height: 16rem;
+  background: oklch(0.9 0.1 180 / 0.28);
+  animation-delay: -3s;
+}
+
+.liquid-orb-3 {
+  bottom: 8%;
+  left: 50%;
+  width: 18rem;
+  height: 18rem;
+  background: oklch(0.82 0.07 280 / 0.2);
+  transform: translateX(-50%);
+  animation-delay: -6s;
+}
+
+.dark .liquid-orb-1 {
+  background: oklch(0.42 0.1 235 / 0.28);
+}
+
+.dark .liquid-orb-2 {
+  background: oklch(0.38 0.08 170 / 0.22);
+}
+
+.dark .liquid-orb-3 {
+  background: oklch(0.35 0.07 285 / 0.18);
+}
