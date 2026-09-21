@@ -3,6 +3,10 @@ import type { VercelRequest, VercelResponse } from '@vercel/node'
 import { Resend } from 'resend'
 import { isValidEmail } from './send-email-utils.mjs'
 
+const RATE_LIMIT_WINDOW_MS = 10 * 60 * 1000
+const RATE_LIMIT_MAX_REQUESTS = 5
+const requestLog = new Map<string, number[]>()
+
 const escapeHtml = (value: string) =>
   value
     .replace(/&/g, '&amp;')
@@ -10,6 +14,30 @@ const escapeHtml = (value: string) =>
     .replace(/>/g, '&gt;')
     .replace(/"/g, '&quot;')
     .replace(/'/g, '&#039;')
+
+const getClientKey = (req: VercelRequest) => {
+  const forwardedFor = req.headers['x-forwarded-for']
+  const ip =
+    typeof forwardedFor === 'string'
+      ? forwardedFor.split(',')[0]?.trim()
+      : Array.isArray(forwardedFor)
+        ? forwardedFor[0]
+        : req.socket.remoteAddress
+
+  return ip || 'unknown'
+}
+
+const isRateLimited = (key: string) => {
+  const now = Date.now()
+  const recentRequests = (requestLog.get(key) || []).filter(
+    (timestamp) => now - timestamp < RATE_LIMIT_WINDOW_MS
+  )
+
+  recentRequests.push(now)
+  requestLog.set(key, recentRequests)
+
+  return recentRequests.length > RATE_LIMIT_MAX_REQUESTS
+}
 
 export default async function handler(
   req: VercelRequest,
@@ -44,6 +72,11 @@ export default async function handler(
   const email = typeof body.email === 'string' ? body.email.trim() : ''
   const message = typeof body.message === 'string' ? body.message.trim() : ''
   const website = typeof body.website === 'string' ? body.website.trim() : ''
+  const clientKey = getClientKey(req)
+
+  if (isRateLimited(clientKey)) {
+    return res.status(429).json({ error: 'Too many requests. Please try again later.' })
+  }
 
   if (website) {
     return res.status(200).json({

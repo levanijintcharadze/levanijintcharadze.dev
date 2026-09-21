@@ -353,7 +353,6 @@ export function HomePage() {
                         title={link.label}
                       >
                         <FontAwesomeIcon icon={link.icon} className="h-5 w-5" />
-                        <span className="sr-only">{link.label}</span>
                       </a>
                     </Button>
                   ))}
