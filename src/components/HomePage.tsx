@@ -294,7 +294,6 @@ export function HomePage() {
                             name="website"
                             tabIndex={-1}
                             autoComplete="off"
-                            disabled={isSubmitting}
                           />
                         </div>
                         <div className="grid gap-2">

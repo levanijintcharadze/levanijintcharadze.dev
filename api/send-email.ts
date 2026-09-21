@@ -15,8 +15,35 @@ const isValidEmail = (value: string) => {
     return false
   }
 
-  const atIndex = value.indexOf('@')
-  return atIndex > 0 && atIndex === value.lastIndexOf('@') && atIndex < value.length - 1
+  const parts = value.split('@')
+  if (parts.length !== 2) {
+    return false
+  }
+
+  const [localPart, domain] = parts
+  if (!localPart || !domain || !domain.includes('.')) {
+    return false
+  }
+
+  const domainLabels = domain.split('.')
+  return domainLabels.every((label) => {
+    if (!label || label.startsWith('-') || label.endsWith('-')) {
+      return false
+    }
+
+    for (const character of label) {
+      const isLetterOrDigit =
+        (character >= 'a' && character <= 'z') ||
+        (character >= 'A' && character <= 'Z') ||
+        (character >= '0' && character <= '9')
+
+      if (!isLetterOrDigit && character !== '-') {
+        return false
+      }
+    }
+
+    return true
+  })
 }
 
 export default async function handler(
