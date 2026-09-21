@@ -1,7 +1,7 @@
 import { createHash } from 'node:crypto'
 import type { VercelRequest, VercelResponse } from '@vercel/node'
 import { Resend } from 'resend'
-import { handleContactSubmission } from './send-email-handler.mjs'
+import { handleContactSubmission } from './send-email-handler.js'
 
 const getClientKey = (req: VercelRequest) => {
   const forwardedFor = req.headers['x-forwarded-for']

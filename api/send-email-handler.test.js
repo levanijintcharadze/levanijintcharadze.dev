@@ -4,7 +4,7 @@ import test, { beforeEach } from 'node:test'
 import {
   handleContactSubmission,
   resetContactSubmissionState,
-} from './send-email-handler.mjs'
+} from './send-email-handler.js'
 
 beforeEach(() => {
   resetContactSubmissionState()
@@ -93,4 +93,33 @@ test('short-circuits honeypot submissions without sending email', async () => {
     message: 'Email sent successfully',
   })
   assert.equal(sendCalls, 0)
+})
+
+test('does not count failed delivery attempts against the rate limit', async () => {
+  const failedResult = await handleContactSubmission({
+    ...validPayload,
+    sendEmail: async () => ({
+      data: null,
+      error: { statusCode: 502, message: 'Temporary failure' },
+    }),
+  })
+
+  assert.equal(failedResult.status, 502)
+
+  let sendCalls = 0
+  const sendEmail = async () => {
+    sendCalls += 1
+    return { data: { id: `message-${sendCalls}` }, error: null }
+  }
+
+  for (let index = 0; index < 5; index += 1) {
+    const result = await handleContactSubmission({
+      ...validPayload,
+      sendEmail,
+    })
+
+    assert.equal(result.status, 200)
+  }
+
+  assert.equal(sendCalls, 5)
 })

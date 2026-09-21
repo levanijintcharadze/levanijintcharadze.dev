@@ -1,6 +1,6 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
-import { isValidEmail } from './send-email-utils.mjs'
+import { isValidEmail } from './send-email-utils.js'
 
 test('accepts common valid email formats', () => {
   assert.equal(isValidEmail('user+tag@example.com'), true)

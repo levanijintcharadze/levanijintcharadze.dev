@@ -1,4 +1,4 @@
-import { isValidEmail } from './send-email-utils.mjs'
+import { isValidEmail } from './send-email-utils.js'
 
 const RATE_LIMIT_WINDOW_MS = 10 * 60 * 1000
 const RATE_LIMIT_MAX_REQUESTS = 5
@@ -26,15 +26,21 @@ const pruneRequestLog = (now) => {
   }
 }
 
-const isRateLimited = (key) => {
+const getRecentRequestCount = (key) => {
   const now = Date.now()
   pruneRequestLog(now)
 
-  const recentRequests = requestLog.get(key) || []
+  return (requestLog.get(key) || []).length
+}
+
+const recordSuccessfulRequest = (key) => {
+  const now = Date.now()
+  const recentRequests = (requestLog.get(key) || []).filter(
+    (timestamp) => now - timestamp < RATE_LIMIT_WINDOW_MS
+  )
+
   recentRequests.push(now)
   requestLog.set(key, recentRequests)
-
-  return recentRequests.length > RATE_LIMIT_MAX_REQUESTS
 }
 
 export const resetContactSubmissionState = () => {
@@ -77,7 +83,7 @@ export async function handleContactSubmission({
     }
   }
 
-  if (isRateLimited(clientKey)) {
+  if (getRecentRequestCount(clientKey) >= RATE_LIMIT_MAX_REQUESTS) {
     return {
       status: 429,
       body: {
@@ -123,6 +129,8 @@ export async function handleContactSubmission({
       },
     }
   }
+
+  recordSuccessfulRequest(clientKey)
 
   return {
     status: 200,
