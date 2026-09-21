@@ -138,7 +138,7 @@ export function HomePage() {
       })
 
       const result =
-        response.status === 204 || !response.headers.get('content-type')?.includes('application/json')
+        response.status === 204 || !response.headers.get('content-type')?.includes('json')
           ? {}
           : await response.json().catch(() => ({} as { error?: string }))
 
@@ -226,6 +226,7 @@ export function HomePage() {
                     href={link.href}
                     target={link.external ? '_blank' : undefined}
                     rel={link.external ? 'noopener noreferrer' : undefined}
+                    aria-label={link.external ? `${link.label} (opens in a new tab)` : link.label}
                     className="group flex items-center justify-between gap-4 rounded-[1.5rem] border border-white/25 bg-white/40 px-4 py-4 text-left shadow-lg shadow-black/5 backdrop-blur-2xl transition duration-300 hover:-translate-y-0.5 hover:bg-white/55 dark:border-white/10 dark:bg-white/[0.08] dark:hover:bg-white/[0.12] sm:px-5"
                   >
                     <div className="flex min-w-0 items-center gap-4">
@@ -235,6 +236,7 @@ export function HomePage() {
                       <div className="min-w-0">
                         <p className="truncate font-medium text-foreground">{link.label}</p>
                         <p className="truncate text-sm text-muted-foreground">{link.description}</p>
+                        {link.external && <span className="sr-only">Opens in a new tab</span>}
                       </div>
                     </div>
                     <FontAwesomeIcon
@@ -323,6 +325,7 @@ export function HomePage() {
                       href={link.href}
                       target="_blank"
                       rel="noopener noreferrer"
+                      aria-label={`${link.label} (opens in a new tab)`}
                       className="rounded-[1.25rem] border border-white/20 bg-white/35 px-3 py-3 text-left transition duration-300 hover:-translate-y-0.5 hover:bg-white/50 dark:border-white/10 dark:bg-white/[0.08] dark:hover:bg-white/[0.12]"
                     >
                       <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-2xl bg-white/65 text-primary shadow-sm dark:bg-white/10">
@@ -330,6 +333,7 @@ export function HomePage() {
                       </div>
                       <p className="font-medium text-foreground">{link.label}</p>
                       <p className="mt-1 text-xs text-muted-foreground">{link.description}</p>
+                      <span className="sr-only">Opens in a new tab</span>
                     </a>
                   ))}
                 </div>

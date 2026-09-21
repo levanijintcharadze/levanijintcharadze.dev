@@ -2,8 +2,6 @@ import { createHash } from 'node:crypto'
 import type { VercelRequest, VercelResponse } from '@vercel/node'
 import { Resend } from 'resend'
 
-const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-
 const escapeHtml = (value: string) =>
   value
     .replace(/&/g, '&amp;')
@@ -11,6 +9,15 @@ const escapeHtml = (value: string) =>
     .replace(/>/g, '&gt;')
     .replace(/"/g, '&quot;')
     .replace(/'/g, '&#039;')
+
+const isValidEmail = (value: string) => {
+  if (!value || value.length > 254 || value.includes(' ')) {
+    return false
+  }
+
+  const atIndex = value.indexOf('@')
+  return atIndex > 0 && atIndex === value.lastIndexOf('@') && atIndex < value.length - 1
+}
 
 export default async function handler(
   req: VercelRequest,
@@ -54,7 +61,7 @@ export default async function handler(
     return res.status(400).json({ error: 'Missing required fields' })
   }
 
-  if (!emailRegex.test(email)) {
+  if (!isValidEmail(email)) {
     return res.status(400).json({ error: 'Invalid email address' })
   }
 
