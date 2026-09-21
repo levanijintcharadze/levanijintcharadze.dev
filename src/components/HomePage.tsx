@@ -8,32 +8,20 @@ import {
   faFileArrowDown,
   faGlobe,
   faLocationDot,
-  faPaperPlane,
 } from '@fortawesome/free-solid-svg-icons'
 import {
+  faFacebook,
   faBluesky,
   faGithub,
   faInstagram,
   faLinkedin,
   faThreads,
+  faTiktok,
   faXTwitter,
+  faYoutube,
 } from '@fortawesome/free-brands-svg-icons'
 import { ThemeToggle } from './ThemeToggle'
-import { Toaster } from '@/components/ui/sonner'
-import { Button } from '@/components/ui/button'
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from '@/components/ui/dialog'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
-import { Textarea } from '@/components/ui/textarea'
-import { toast } from 'sonner'
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion'
 
 type LinkItem = {
   href?: string
@@ -102,67 +90,67 @@ const socialLinks: LinkItem[] = [
     icon: faThreads,
     external: true,
   },
+  {
+    href: 'https://www.facebook.com/levanjintcharadzedev/',
+    label: 'Facebook',
+    description: 'Community and updates',
+    icon: faFacebook,
+    external: true,
+  },
+  {
+    href: 'https://www.tiktok.com/@levanjintcharadze0',
+    label: 'TikTok',
+    description: 'Short videos and snippets',
+    icon: faTiktok,
+    external: true,
+  },
+  {
+    href: 'https://www.youtube.com/@levanjintcharadze',
+    label: 'YouTube',
+    description: 'Long-form content',
+    icon: faYoutube,
+    external: true,
+  },
+]
+
+const experiences = [
+  {
+    value: 'tbc-bank',
+    title: 'C# / .NET Developer',
+    company: 'TBC Bank',
+    period: 'Mar 2020 — Present',
+    location: 'Tbilisi',
+    description:
+      'Leading backend development for core banking services with a focus on scalable APIs, resilient integrations, and high-throughput systems.',
+    technologies: ['C#', '.NET', 'ASP.NET Web API', 'Azure DevOps', 'SQL Server', 'Redis', 'RabbitMQ', 'Microservices'],
+    logoSrc: '/tbc_bank_logo.jpg',
+  },
+  {
+    value: 'dotnet-developers',
+    title: 'Editor',
+    company: '.NET Developers',
+    period: 'May 2020 — Present',
+    location: 'Remote',
+    description:
+      'Creating educational .NET content, tutorials, and community-focused articles that help developers stay sharp and informed.',
+    technologies: ['Editorial', '.NET Community', 'Technical Writing'],
+    logoSrc: '/dotnetdevs_logo.jpg',
+  },
+  {
+    value: 'dilaplus',
+    title: 'Web Developer',
+    company: 'DilaPlus Travel Company',
+    period: 'Jan 2017 — Mar 2017',
+    location: 'Tbilisi',
+    description:
+      'Handled front-end development and overall website presentation, delivering a polished WordPress-based experience.',
+    technologies: ['HTML', 'CSS', 'WordPress'],
+    logoSrc: '/dila_plus_logo.jpg',
+  },
 ]
 
 export function HomePage() {
-  const [isSubmitting, setIsSubmitting] = useState(false)
-  const [isDialogOpen, setIsDialogOpen] = useState(false)
   const [showProfileImage, setShowProfileImage] = useState(true)
-
-  const contactEmail = 'levanijincharadze@outlook.com'
-
-  const openMailtoFallback = (name: string, email: string, message: string) => {
-    const subject = `Portfolio Contact from ${name || 'Website Visitor'}`
-    const body = [`Name: ${name}`, `Email: ${email}`, '', 'Message:', message].join('\n')
-    window.location.href = `mailto:${contactEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`
-  }
-
-  const handleEmailSubmit: React.FormEventHandler<HTMLFormElement> = async (e) => {
-    e.preventDefault()
-    const form = e.currentTarget
-    const data = new FormData(form)
-    const name = String(data.get('name') || '')
-    const email = String(data.get('email') || '')
-    const message = String(data.get('message') || '')
-    const website = String(data.get('website') || '')
-
-    setIsSubmitting(true)
-
-    try {
-      const response = await fetch('/api/send-email', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ name, email, message, website }),
-      })
-
-      const result =
-        response.status === 204 || !response.headers.get('content-type')?.includes('json')
-          ? {}
-          : await response.json().catch(() => ({} as { error?: string }))
-
-      if (response.ok) {
-        toast.success('Message sent successfully!', {
-          description: 'Thank you for reaching out. I’ll get back to you soon.',
-        })
-        form.reset()
-        setIsDialogOpen(false)
-      } else {
-        openMailtoFallback(name, email, message)
-        toast.info('Opening your email app', {
-          description: result.error || 'Direct sending is unavailable right now, so a prefilled draft was created.',
-        })
-      }
-    } catch {
-      openMailtoFallback(name, email, message)
-      toast.info('Opening your email app', {
-        description: 'Direct sending is unavailable right now, so a prefilled draft was created.',
-      })
-    } finally {
-      setIsSubmitting(false)
-    }
-  }
 
   return (
     <div className="liquid-shell min-h-screen overflow-hidden px-4 py-6 sm:px-6 lg:px-8">
@@ -266,58 +254,58 @@ export function HomePage() {
                 </div>
               </div>
 
-              <div className="mt-5 w-full rounded-[1.5rem] border border-white/20 bg-white/28 p-4 backdrop-blur-xl dark:border-white/10 dark:bg-white/[0.06]">
-                <div className="mb-3 flex items-center justify-between gap-3">
-                  <div className="text-left">
-                    <p className="font-medium text-foreground">Socials</p>
-                    <p className="text-sm text-muted-foreground">A few more places to find me.</p>
-                  </div>
-                  <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-                    <DialogTrigger asChild>
-                      <Button className="rounded-full px-4">
-                        <FontAwesomeIcon icon={faPaperPlane} />
-                        Contact
-                      </Button>
-                    </DialogTrigger>
-                    <DialogContent>
-                      <DialogHeader>
-                        <DialogTitle>Send me a message</DialogTitle>
-                        <DialogDescription>
-                          Share a quick note and I’ll reply as soon as possible.
-                        </DialogDescription>
-                      </DialogHeader>
-                      <form className="space-y-4 text-left" onSubmit={handleEmailSubmit}>
-                        <div className="hidden" aria-hidden="true">
-                          <Label htmlFor="website">Website</Label>
-                          <Input
-                            id="website"
-                            name="website"
-                            tabIndex={-1}
-                            autoComplete="off"
-                          />
-                        </div>
-                        <div className="grid gap-2">
-                          <Label htmlFor="name">Name</Label>
-                          <Input id="name" name="name" placeholder="Your name" required disabled={isSubmitting} />
-                        </div>
-                        <div className="grid gap-2">
-                          <Label htmlFor="email">Email</Label>
-                          <Input id="email" name="email" type="email" placeholder="you@example.com" required disabled={isSubmitting} />
-                        </div>
-                        <div className="grid gap-2">
-                          <Label htmlFor="message">Message</Label>
-                          <Textarea id="message" name="message" placeholder="How can I help?" required disabled={isSubmitting} />
-                        </div>
-                        <DialogFooter>
-                          <Button type="submit" disabled={isSubmitting}>
-                            {isSubmitting ? 'Sending...' : 'Send message'}
-                          </Button>
-                        </DialogFooter>
-                      </form>
-                    </DialogContent>
-                  </Dialog>
+              <div className="mt-5 w-full rounded-[1.5rem] border border-white/20 bg-white/28 p-4 text-left backdrop-blur-xl dark:border-white/10 dark:bg-white/[0.06]">
+                <div className="mb-3">
+                  <p className="font-medium text-foreground">Work experience</p>
+                  <p className="text-sm text-muted-foreground">A quick overview of roles and impact.</p>
                 </div>
-                <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+                <Accordion type="single" collapsible className="w-full">
+                  {experiences.map((experience) => (
+                    <AccordionItem
+                      key={experience.value}
+                      value={experience.value}
+                      className="border-white/20 last:border-b-0 dark:border-white/10"
+                    >
+                      <AccordionTrigger className="py-4 hover:no-underline">
+                        <div className="flex min-w-0 items-center gap-3 text-left">
+                          <img
+                            src={experience.logoSrc}
+                            alt={`${experience.company} logo`}
+                            className="h-11 w-11 shrink-0 rounded-2xl border border-white/30 object-cover shadow-sm dark:border-white/10"
+                          />
+                          <div className="min-w-0">
+                            <p className="truncate font-medium text-foreground">{experience.title}</p>
+                            <p className="truncate text-sm text-muted-foreground">
+                              {experience.company} · {experience.period}
+                            </p>
+                          </div>
+                        </div>
+                      </AccordionTrigger>
+                      <AccordionContent className="space-y-4 pt-1">
+                        <p className="text-sm text-muted-foreground">{experience.location}</p>
+                        <p className="text-sm leading-6 text-foreground/85">{experience.description}</p>
+                        <div className="flex flex-wrap gap-2">
+                          {experience.technologies.map((technology) => (
+                            <span
+                              key={technology}
+                              className="rounded-full border border-white/20 bg-white/35 px-3 py-1 text-xs text-foreground/80 dark:border-white/10 dark:bg-white/[0.08]"
+                            >
+                              {technology}
+                            </span>
+                          ))}
+                        </div>
+                      </AccordionContent>
+                    </AccordionItem>
+                  ))}
+                </Accordion>
+              </div>
+
+              <div className="mt-5 w-full rounded-[1.5rem] border border-white/20 bg-white/28 p-4 backdrop-blur-xl dark:border-white/10 dark:bg-white/[0.06]">
+                <div className="mb-3 text-left">
+                  <p className="font-medium text-foreground">Socials</p>
+                  <p className="text-sm text-muted-foreground">A few more places to find me.</p>
+                </div>
+                <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
                   {socialLinks.map((link) => (
                     <a
                       key={link.label}
@@ -346,7 +334,6 @@ export function HomePage() {
         </footer>
       </div>
 
-      <Toaster />
     </div>
   )
 }
