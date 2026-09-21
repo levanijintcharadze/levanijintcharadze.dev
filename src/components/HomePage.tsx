@@ -50,10 +50,24 @@ const featuredLinks: LinkItem[] = [
     external: true,
   },
   {
+    href: 'https://www.dotnetdevs.io/',
+    label: 'DotNetDevs',
+    description: 'Community platform I maintain for .NET developers.',
+    icon: faGlobe,
+    external: true,
+  },
+  {
     href: 'https://www.linkedin.com/in/levanjintcharadze/',
     label: 'LinkedIn',
     description: 'Career highlights, recommendations, and updates.',
     icon: faLinkedin,
+    external: true,
+  },
+  {
+    href: 'https://dotnet.news',
+    label: 'dotnet.news',
+    description: 'The .NET Insider newsletter with curated ecosystem updates.',
+    icon: faGlobe,
     external: true,
   },
   {
