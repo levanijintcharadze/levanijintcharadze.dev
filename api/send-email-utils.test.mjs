@@ -13,4 +13,5 @@ test('rejects malformed email formats', () => {
   assert.equal(isValidEmail('user@-example.com'), false)
   assert.equal(isValidEmail('first last@example.com'), false)
   assert.equal(isValidEmail('double..dot@example.com'), false)
+  assert.equal(isValidEmail('user@\ud800.com'), false)
 })
