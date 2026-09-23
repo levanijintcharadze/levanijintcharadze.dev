@@ -29,6 +29,7 @@ type LinkItem = {
   label: string
   description: string
   icon: IconDefinition
+  logoSrc?: string
   external?: boolean
   ariaLabel?: string
   hoverClassName?: string
@@ -57,25 +58,26 @@ const featuredLinks: LinkItem[] = [
     external: true,
   },
   {
-    href: 'mailto:levanijincharadze@outlook.com',
-    label: 'Email Me',
-    description: 'Reach out directly for opportunities or collaborations.',
-    icon: faEnvelope,
-  },
-]
-
-const linkedinLinks = [
-  {
     href: 'https://www.dotnetdevs.io/',
     label: 'DotNetDevs',
     description: 'Community platform I maintain for .NET developers.',
+    icon: faGlobe,
     logoSrc: 'https://github.com/user-attachments/assets/f1f8b6dc-bc5d-40d0-8be9-2ee4bbff76e0',
+    external: true,
   },
   {
     href: 'https://dotnet.news',
     label: 'dotnet.news',
     description: 'The .NET Insider newsletter with curated ecosystem updates.',
+    icon: faGlobe,
     logoSrc: 'https://github.com/user-attachments/assets/9c65f7b1-f5f5-48b1-aae4-726f88db3817',
+    external: true,
+  },
+  {
+    href: 'mailto:levanijincharadze@outlook.com',
+    label: 'Email Me',
+    description: 'Reach out directly for opportunities or collaborations.',
+    icon: faEnvelope,
   },
 ]
 
@@ -205,13 +207,13 @@ export function HomePage() {
         <header className="mb-6 flex items-center justify-between rounded-full border border-white/25 bg-white/12 px-4 py-3 backdrop-blur-xl dark:border-white/10 dark:bg-white/5">
           <div>
             <p className="text-sm font-medium text-foreground">levanjintcharadze.dev</p>
-            <p className="text-xs text-muted-foreground">Portfolio / Link hub</p>
+            <p className="text-xs text-muted-foreground">Personal portfolio</p>
           </div>
           <ThemeToggle />
         </header>
 
         <main className="flex flex-1 flex-col items-center justify-center">
-          <section className="liquid-panel w-full rounded-[2rem] p-5 sm:p-8">
+          <section className="liquid-panel w-full rounded-4xl p-5 sm:p-8">
             <div className="flex flex-col items-center text-center">
               {showProfileImage ? (
                 <img
@@ -249,82 +251,48 @@ export function HomePage() {
               </div>
 
               <div className="mt-6 grid w-full gap-3">
-                {featuredLinks.flatMap((link) => {
-                  const items = [
-                    <div key={link.label} className="grid gap-2">
-                      <a
-                        href={link.href}
-                        target={link.external ? '_blank' : undefined}
-                        rel={link.external ? 'noopener noreferrer' : undefined}
-                        aria-label={link.external ? `${link.label} (opens in a new tab)` : link.label}
-                        className="group flex items-center justify-between gap-4 rounded-[1.5rem] border border-white/25 bg-white/40 px-4 py-4 text-left shadow-lg shadow-black/5 backdrop-blur-2xl transition duration-300 hover:-translate-y-0.5 hover:bg-white/55 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/70 focus-visible:ring-offset-2 focus-visible:ring-offset-background dark:border-white/10 dark:bg-white/[0.08] dark:hover:bg-white/[0.12] sm:px-5"
-                      >
-                        <div className="flex min-w-0 items-center gap-4">
-                          <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-white/60 text-lg text-primary shadow-sm dark:bg-white/10">
+                {featuredLinks.map((link) => (
+                  <div key={link.label} className="grid gap-2">
+                    <a
+                      href={link.href}
+                      target={link.external ? '_blank' : undefined}
+                      rel={link.external ? 'noopener noreferrer' : undefined}
+                      aria-label={link.external ? `${link.label} (opens in a new tab)` : link.label}
+                      className="group flex items-center justify-between gap-4 rounded-[1.5rem] border border-white/25 bg-white/40 px-4 py-4 text-left shadow-lg shadow-black/5 backdrop-blur-2xl transition duration-300 hover:-translate-y-0.5 hover:bg-white/55 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/70 focus-visible:ring-offset-2 focus-visible:ring-offset-background dark:border-white/10 dark:bg-white/[0.08] dark:hover:bg-white/[0.12] sm:px-5"
+                    >
+                      <div className="flex min-w-0 items-center gap-4">
+                        <div className="flex h-11 w-11 shrink-0 items-center justify-center overflow-hidden rounded-2xl bg-white/60 text-lg text-primary shadow-sm dark:bg-white/10">
+                          {link.logoSrc ? (
+                            <img src={link.logoSrc} alt={`${link.label} logo`} className="h-full w-full object-cover" />
+                          ) : (
                             <FontAwesomeIcon icon={link.icon} />
-                          </div>
-                          <div className="min-w-0">
-                            <p className="truncate font-medium text-foreground">{link.label}</p>
-                            <p className="truncate text-sm text-muted-foreground">{link.description}</p>
-                          </div>
+                          )}
                         </div>
-                        <FontAwesomeIcon
-                          icon={faArrowRight}
-                          className="shrink-0 text-sm text-muted-foreground transition-transform group-hover:translate-x-1 group-hover:text-foreground"
-                        />
-                      </a>
-                    </div>,
-                  ]
-
-                  if (link.label === 'LinkedIn') {
-                    items.push(
-                      ...linkedinLinks.map((subLink) => (
-                        <div key={subLink.label} className="grid gap-2 pl-3 sm:pl-6">
-                          <a
-                            href={subLink.href}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            aria-label={`${subLink.label} (opens in a new tab)`}
-                            className="group flex items-center justify-between gap-4 rounded-[1.5rem] border border-white/25 bg-white/34 px-4 py-4 text-left shadow-lg shadow-black/5 backdrop-blur-2xl transition duration-300 hover:-translate-y-0.5 hover:bg-white/48 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/70 focus-visible:ring-offset-2 focus-visible:ring-offset-background dark:border-white/10 dark:bg-white/[0.08] dark:hover:bg-white/[0.12] sm:px-5"
-                          >
-                            <div className="flex min-w-0 items-center gap-3">
-                              <div className="flex h-11 w-11 shrink-0 items-center justify-center overflow-hidden rounded-[50%] border border-white/20 bg-[#1b0a4b] shadow-sm dark:border-white/10">
-                                <img
-                                  src={subLink.logoSrc}
-                                  alt={`${subLink.label} logo`}
-                                  className="h-full w-full rounded-[50%] object-cover"
-                                />
-                              </div>
-                              <div className="min-w-0">
-                                <p className="truncate font-medium text-foreground">{subLink.label}</p>
-                                <p className="truncate text-sm text-muted-foreground">{subLink.description}</p>
-                              </div>
-                            </div>
-                            <FontAwesomeIcon
-                              icon={faArrowRight}
-                              className="shrink-0 text-sm text-muted-foreground transition-transform group-hover:translate-x-1 group-hover:text-foreground"
-                            />
-                          </a>
+                        <div className="min-w-0">
+                          <p className="truncate font-medium text-foreground">{link.label}</p>
+                          <p className="truncate text-sm text-muted-foreground">{link.description}</p>
                         </div>
-                      ))
-                    )
-                  }
-
-                  return items
-                })}
+                      </div>
+                      <FontAwesomeIcon
+                        icon={faArrowRight}
+                        className="shrink-0 text-sm text-muted-foreground transition-transform group-hover:translate-x-1 group-hover:text-foreground"
+                      />
+                    </a>
+                  </div>
+                ))}
               </div>
 
               <div className="mt-5 grid w-full gap-3 sm:grid-cols-2">
-                <div className="rounded-[1.5rem] border border-white/20 bg-white/28 p-4 text-left backdrop-blur-xl dark:border-white/10 dark:bg-white/[0.06]">
+                <div className="rounded-3xl border border-white/20 bg-white/28 p-4 text-left backdrop-blur-xl dark:border-white/10 dark:bg-white/[0.06]">
                   <div className="mb-2 flex items-center gap-2 text-sm text-muted-foreground">
                     <FontAwesomeIcon icon={faGlobe} />
-                    Currently
+                    Current focus
                   </div>
                   <p className="text-sm leading-6 text-foreground/85">
-                    Open to senior engineering, platform, and consulting opportunities.
+                    Building reliable banking platforms at TBC Bank and contributing to the .NET developer community.
                   </p>
                 </div>
-                <div className="rounded-[1.5rem] border border-white/20 bg-white/28 p-4 text-left backdrop-blur-xl dark:border-white/10 dark:bg-white/[0.06]">
+                <div className="rounded-3xl border border-white/20 bg-white/28 p-4 text-left backdrop-blur-xl dark:border-white/10 dark:bg-white/[0.06]">
                   <div className="mb-2 flex items-center gap-2 text-sm text-muted-foreground">
                     <FontAwesomeIcon icon={faLocationDot} />
                     Based in
@@ -333,7 +301,7 @@ export function HomePage() {
                 </div>
               </div>
 
-              <div className="mt-5 w-full rounded-[1.5rem] border border-white/20 bg-white/28 p-4 text-left backdrop-blur-xl dark:border-white/10 dark:bg-white/[0.06]">
+              <div className="mt-5 w-full rounded-3xl border border-white/20 bg-white/28 p-4 text-left backdrop-blur-xl dark:border-white/10 dark:bg-white/6">
                 <div className="mb-3">
                   <p className="font-medium text-foreground">Work experience</p>
                   <p className="text-sm text-muted-foreground">A quick overview of roles and impact.</p>
@@ -391,7 +359,7 @@ export function HomePage() {
                 </Accordion>
               </div>
 
-              <div className="mt-5 w-full rounded-[1.5rem] border border-white/20 bg-white/28 p-4 backdrop-blur-xl dark:border-white/10 dark:bg-white/[0.06]">
+              <div className="mt-5 w-full rounded-3xl border border-white/20 bg-white/28 p-4 backdrop-blur-xl dark:border-white/10 dark:bg-white/6">
                 <div className="mb-3 text-left">
                   <p className="font-medium text-foreground">Socials</p>
                   <p className="text-sm text-muted-foreground">A few more places to find me.</p>
@@ -423,7 +391,7 @@ export function HomePage() {
         </main>
 
         <footer className="pt-6 text-center text-xs text-muted-foreground">
-          Designed as a minimal glassmorphic link hub.
+          © {new Date().getFullYear()} Levan Jintcharadze. All rights reserved.
         </footer>
       </div>
 
