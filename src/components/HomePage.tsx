@@ -249,35 +249,38 @@ export function HomePage() {
               </div>
 
               <div className="mt-6 grid w-full gap-3">
-                {featuredLinks.map((link) => (
-                  <div key={link.label} className="grid gap-2">
-                    <a
-                      href={link.href}
-                      target={link.external ? '_blank' : undefined}
-                      rel={link.external ? 'noopener noreferrer' : undefined}
-                      aria-label={link.external ? `${link.label} (opens in a new tab)` : link.label}
-                      className="group flex items-center justify-between gap-4 rounded-[1.5rem] border border-white/25 bg-white/40 px-4 py-4 text-left shadow-lg shadow-black/5 backdrop-blur-2xl transition duration-300 hover:-translate-y-0.5 hover:bg-white/55 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/70 focus-visible:ring-offset-2 focus-visible:ring-offset-background dark:border-white/10 dark:bg-white/[0.08] dark:hover:bg-white/[0.12] sm:px-5"
-                    >
-                      <div className="flex min-w-0 items-center gap-4">
-                        <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-white/60 text-lg text-primary shadow-sm dark:bg-white/10">
-                          <FontAwesomeIcon icon={link.icon} />
+                {featuredLinks.flatMap((link) => {
+                  const items = [
+                    <div key={link.label} className="grid gap-2">
+                      <a
+                        href={link.href}
+                        target={link.external ? '_blank' : undefined}
+                        rel={link.external ? 'noopener noreferrer' : undefined}
+                        aria-label={link.external ? `${link.label} (opens in a new tab)` : link.label}
+                        className="group flex items-center justify-between gap-4 rounded-[1.5rem] border border-white/25 bg-white/40 px-4 py-4 text-left shadow-lg shadow-black/5 backdrop-blur-2xl transition duration-300 hover:-translate-y-0.5 hover:bg-white/55 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/70 focus-visible:ring-offset-2 focus-visible:ring-offset-background dark:border-white/10 dark:bg-white/[0.08] dark:hover:bg-white/[0.12] sm:px-5"
+                      >
+                        <div className="flex min-w-0 items-center gap-4">
+                          <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-white/60 text-lg text-primary shadow-sm dark:bg-white/10">
+                            <FontAwesomeIcon icon={link.icon} />
+                          </div>
+                          <div className="min-w-0">
+                            <p className="truncate font-medium text-foreground">{link.label}</p>
+                            <p className="truncate text-sm text-muted-foreground">{link.description}</p>
+                          </div>
                         </div>
-                        <div className="min-w-0">
-                          <p className="truncate font-medium text-foreground">{link.label}</p>
-                          <p className="truncate text-sm text-muted-foreground">{link.description}</p>
-                        </div>
-                      </div>
-                      <FontAwesomeIcon
-                        icon={faArrowRight}
-                        className="shrink-0 text-sm text-muted-foreground transition-transform group-hover:translate-x-1 group-hover:text-foreground"
-                      />
-                    </a>
+                        <FontAwesomeIcon
+                          icon={faArrowRight}
+                          className="shrink-0 text-sm text-muted-foreground transition-transform group-hover:translate-x-1 group-hover:text-foreground"
+                        />
+                      </a>
+                    </div>,
+                  ]
 
-                    {link.label === 'LinkedIn' && (
-                      <div className="grid gap-3 pl-3 sm:pl-6">
-                        {linkedinLinks.map((subLink) => (
+                  if (link.label === 'LinkedIn') {
+                    items.push(
+                      ...linkedinLinks.map((subLink) => (
+                        <div key={subLink.label} className="grid gap-2 pl-3 sm:pl-6">
                           <a
-                            key={subLink.label}
                             href={subLink.href}
                             target="_blank"
                             rel="noopener noreferrer"
@@ -302,11 +305,13 @@ export function HomePage() {
                               className="shrink-0 text-sm text-muted-foreground transition-transform group-hover:translate-x-1 group-hover:text-foreground"
                             />
                           </a>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-                ))}
+                        </div>
+                      ))
+                    )
+                  }
+
+                  return items
+                })}
               </div>
 
               <div className="mt-5 grid w-full gap-3 sm:grid-cols-2">
