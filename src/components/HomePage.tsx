@@ -50,13 +50,6 @@ const featuredLinks: LinkItem[] = [
     external: true,
   },
   {
-    href: 'https://www.dotnetdevs.io/',
-    label: 'DotNetDevs',
-    description: 'Community platform I maintain for .NET developers.',
-    icon: faGlobe,
-    external: true,
-  },
-  {
     href: 'https://www.linkedin.com/in/levanjintcharadze/',
     label: 'LinkedIn',
     description: 'Career highlights, recommendations, and updates.',
@@ -64,17 +57,25 @@ const featuredLinks: LinkItem[] = [
     external: true,
   },
   {
-    href: 'https://dotnet.news',
-    label: 'dotnet.news',
-    description: 'The .NET Insider newsletter with curated ecosystem updates.',
-    icon: faGlobe,
-    external: true,
-  },
-  {
     href: 'mailto:levanijincharadze@outlook.com',
     label: 'Email Me',
     description: 'Reach out directly for opportunities or collaborations.',
     icon: faEnvelope,
+  },
+]
+
+const linkedinLinks = [
+  {
+    href: 'https://www.dotnetdevs.io/',
+    label: 'DotNetDevs',
+    description: 'Community platform I maintain for .NET developers.',
+    logoSrc: 'https://github.com/user-attachments/assets/f1f8b6dc-bc5d-40d0-8be9-2ee4bbff76e0',
+  },
+  {
+    href: 'https://dotnet.news',
+    label: 'dotnet.news',
+    description: 'The .NET Insider newsletter with curated ecosystem updates.',
+    logoSrc: 'https://github.com/user-attachments/assets/9c65f7b1-f5f5-48b1-aae4-726f88db3817',
   },
 ]
 
@@ -249,29 +250,62 @@ export function HomePage() {
 
               <div className="mt-6 grid w-full gap-3">
                 {featuredLinks.map((link) => (
-                  <a
-                    key={link.label}
-                    href={link.href}
-                    target={link.external ? '_blank' : undefined}
-                    rel={link.external ? 'noopener noreferrer' : undefined}
-                    aria-label={link.external ? `${link.label} (opens in a new tab)` : link.label}
-                    className="group flex items-center justify-between gap-4 rounded-[1.5rem] border border-white/25 bg-white/40 px-4 py-4 text-left shadow-lg shadow-black/5 backdrop-blur-2xl transition duration-300 hover:-translate-y-0.5 hover:bg-white/55 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/70 focus-visible:ring-offset-2 focus-visible:ring-offset-background dark:border-white/10 dark:bg-white/[0.08] dark:hover:bg-white/[0.12] sm:px-5"
-                  >
-                    <div className="flex min-w-0 items-center gap-4">
-                      <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-white/60 text-lg text-primary shadow-sm dark:bg-white/10">
-                        <FontAwesomeIcon icon={link.icon} />
+                  <div key={link.label} className="grid gap-2">
+                    <a
+                      href={link.href}
+                      target={link.external ? '_blank' : undefined}
+                      rel={link.external ? 'noopener noreferrer' : undefined}
+                      aria-label={link.external ? `${link.label} (opens in a new tab)` : link.label}
+                      className="group flex items-center justify-between gap-4 rounded-[1.5rem] border border-white/25 bg-white/40 px-4 py-4 text-left shadow-lg shadow-black/5 backdrop-blur-2xl transition duration-300 hover:-translate-y-0.5 hover:bg-white/55 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/70 focus-visible:ring-offset-2 focus-visible:ring-offset-background dark:border-white/10 dark:bg-white/[0.08] dark:hover:bg-white/[0.12] sm:px-5"
+                    >
+                      <div className="flex min-w-0 items-center gap-4">
+                        <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-white/60 text-lg text-primary shadow-sm dark:bg-white/10">
+                          <FontAwesomeIcon icon={link.icon} />
+                        </div>
+                        <div className="min-w-0">
+                          <p className="truncate font-medium text-foreground">{link.label}</p>
+                          <p className="truncate text-sm text-muted-foreground">{link.description}</p>
+                        </div>
                       </div>
-                      <div className="min-w-0">
-                        <p className="truncate font-medium text-foreground">{link.label}</p>
-                        <p className="truncate text-sm text-muted-foreground">{link.description}</p>
-                        {link.external && <span className="sr-only">Opens in a new tab</span>}
+                      <FontAwesomeIcon
+                        icon={faArrowRight}
+                        className="shrink-0 text-sm text-muted-foreground transition-transform group-hover:translate-x-1 group-hover:text-foreground"
+                      />
+                    </a>
+
+                    {link.label === 'LinkedIn' && (
+                      <div className="grid gap-2 pl-4 sm:pl-8">
+                        {linkedinLinks.map((subLink) => (
+                          <a
+                            key={subLink.label}
+                            href={subLink.href}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            aria-label={`${subLink.label} (opens in a new tab)`}
+                            className="group flex items-center justify-between gap-4 rounded-[1.25rem] border border-white/20 bg-white/28 px-3 py-3 text-left shadow-md shadow-black/5 backdrop-blur-xl transition duration-300 hover:-translate-y-0.5 hover:bg-white/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/70 focus-visible:ring-offset-2 focus-visible:ring-offset-background dark:border-white/10 dark:bg-white/[0.06] dark:hover:bg-white/[0.1] sm:px-4"
+                          >
+                            <div className="flex min-w-0 items-center gap-3">
+                              <div className="flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-xl border border-white/20 bg-[#1b0a4b] shadow-sm dark:border-white/10">
+                                <img
+                                  src={subLink.logoSrc}
+                                  alt={`${subLink.label} logo`}
+                                  className="h-full w-full object-cover"
+                                />
+                              </div>
+                              <div className="min-w-0">
+                                <p className="truncate text-sm font-medium text-foreground">{subLink.label}</p>
+                                <p className="truncate text-xs text-muted-foreground">{subLink.description}</p>
+                              </div>
+                            </div>
+                            <FontAwesomeIcon
+                              icon={faArrowRight}
+                              className="shrink-0 text-xs text-muted-foreground transition-transform group-hover:translate-x-1 group-hover:text-foreground"
+                            />
+                          </a>
+                        ))}
                       </div>
-                    </div>
-                    <FontAwesomeIcon
-                      icon={faArrowRight}
-                      className="shrink-0 text-sm text-muted-foreground transition-transform group-hover:translate-x-1 group-hover:text-foreground"
-                    />
-                  </a>
+                    )}
+                  </div>
                 ))}
               </div>
 
