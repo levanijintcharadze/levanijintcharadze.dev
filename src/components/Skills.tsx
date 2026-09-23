@@ -36,7 +36,7 @@ export function Skills() {
         </div>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {skillCategories.map((category, index) => (
+          {skillCategories.map((category) => (
             <GlassCard key={category.title} hover className="h-full">
               <div className="space-y-4">
                 <h3 className="text-xl font-semibold text-foreground">

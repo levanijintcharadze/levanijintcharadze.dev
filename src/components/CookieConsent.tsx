@@ -1,7 +1,27 @@
 import { useState, useEffect } from 'react'
 import { Button } from '@/components/ui/button'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCookie, faXmark } from '@fortawesome/free-solid-svg-icons'
+import { faCookie } from '@fortawesome/free-solid-svg-icons'
+
+type ConsentValue = 'granted' | 'denied'
+type ConsentSettings = {
+  ad_storage: ConsentValue
+  ad_user_data: ConsentValue
+  ad_personalization: ConsentValue
+  analytics_storage: ConsentValue
+}
+
+declare global {
+  interface Window {
+    gtag?: (command: 'consent', action: 'update', settings: ConsentSettings) => void
+  }
+}
+
+function updateConsent(settings: ConsentSettings) {
+  if (typeof window !== 'undefined' && window.gtag) {
+    window.gtag('consent', 'update', settings)
+  }
+}
 
 export function CookieConsent() {
   const [showBanner, setShowBanner] = useState(false)
@@ -12,24 +32,20 @@ export function CookieConsent() {
     
     if (consent === 'accepted') {
       // User previously accepted - update consent immediately
-      if (typeof window !== 'undefined' && (window as any).gtag) {
-        (window as any).gtag('consent', 'update', {
-          'ad_storage': 'granted',
-          'ad_user_data': 'granted',
-          'ad_personalization': 'granted',
-          'analytics_storage': 'granted'
-        })
-      }
+      updateConsent({
+        'ad_storage': 'granted',
+        'ad_user_data': 'granted',
+        'ad_personalization': 'granted',
+        'analytics_storage': 'granted'
+      })
     } else if (consent === 'declined') {
       // User previously declined - ensure it stays denied
-      if (typeof window !== 'undefined' && (window as any).gtag) {
-        (window as any).gtag('consent', 'update', {
-          'ad_storage': 'denied',
-          'ad_user_data': 'denied',
-          'ad_personalization': 'denied',
-          'analytics_storage': 'denied'
-        })
-      }
+      updateConsent({
+        'ad_storage': 'denied',
+        'ad_user_data': 'denied',
+        'ad_personalization': 'denied',
+        'analytics_storage': 'denied'
+      })
     } else {
       // No consent given yet - show banner after a short delay
       setTimeout(() => setShowBanner(true), 1000)
@@ -41,14 +57,12 @@ export function CookieConsent() {
     setShowBanner(false)
     
     // Update consent mode - grant all permissions
-    if (typeof window !== 'undefined' && (window as any).gtag) {
-      (window as any).gtag('consent', 'update', {
-        'ad_storage': 'granted',
-        'ad_user_data': 'granted',
-        'ad_personalization': 'granted',
-        'analytics_storage': 'granted'
-      })
-    }
+    updateConsent({
+      'ad_storage': 'granted',
+      'ad_user_data': 'granted',
+      'ad_personalization': 'granted',
+      'analytics_storage': 'granted'
+    })
   }
 
   const handleDecline = () => {
@@ -56,14 +70,12 @@ export function CookieConsent() {
     setShowBanner(false)
     
     // Update consent mode - keep everything denied
-    if (typeof window !== 'undefined' && (window as any).gtag) {
-      (window as any).gtag('consent', 'update', {
-        'ad_storage': 'denied',
-        'ad_user_data': 'denied',
-        'ad_personalization': 'denied',
-        'analytics_storage': 'denied'
-      })
-    }
+    updateConsent({
+      'ad_storage': 'denied',
+      'ad_user_data': 'denied',
+      'ad_personalization': 'denied',
+      'analytics_storage': 'denied'
+    })
   }
 
   if (!showBanner) return null
