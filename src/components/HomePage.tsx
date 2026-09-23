@@ -274,7 +274,7 @@ export function HomePage() {
                     </a>
 
                     {link.label === 'LinkedIn' && (
-                      <div className="grid gap-2 pl-4 sm:pl-8">
+                      <div className="grid gap-3 pl-3 sm:pl-6">
                         {linkedinLinks.map((subLink) => (
                           <a
                             key={subLink.label}
@@ -282,24 +282,24 @@ export function HomePage() {
                             target="_blank"
                             rel="noopener noreferrer"
                             aria-label={`${subLink.label} (opens in a new tab)`}
-                            className="group flex items-center justify-between gap-4 rounded-[1.25rem] border border-white/20 bg-white/28 px-3 py-3 text-left shadow-md shadow-black/5 backdrop-blur-xl transition duration-300 hover:-translate-y-0.5 hover:bg-white/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/70 focus-visible:ring-offset-2 focus-visible:ring-offset-background dark:border-white/10 dark:bg-white/[0.06] dark:hover:bg-white/[0.1] sm:px-4"
+                            className="group flex items-center justify-between gap-4 rounded-[1.5rem] border border-white/25 bg-white/34 px-4 py-4 text-left shadow-lg shadow-black/5 backdrop-blur-2xl transition duration-300 hover:-translate-y-0.5 hover:bg-white/48 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/70 focus-visible:ring-offset-2 focus-visible:ring-offset-background dark:border-white/10 dark:bg-white/[0.08] dark:hover:bg-white/[0.12] sm:px-5"
                           >
                             <div className="flex min-w-0 items-center gap-3">
-                              <div className="flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-xl border border-white/20 bg-[#1b0a4b] shadow-sm dark:border-white/10">
+                              <div className="flex h-11 w-11 shrink-0 items-center justify-center overflow-hidden rounded-[50%] border border-white/20 bg-[#1b0a4b] shadow-sm dark:border-white/10">
                                 <img
                                   src={subLink.logoSrc}
                                   alt={`${subLink.label} logo`}
-                                  className="h-full w-full object-cover"
+                                  className="h-full w-full rounded-[50%] object-cover"
                                 />
                               </div>
                               <div className="min-w-0">
-                                <p className="truncate text-sm font-medium text-foreground">{subLink.label}</p>
-                                <p className="truncate text-xs text-muted-foreground">{subLink.description}</p>
+                                <p className="truncate font-medium text-foreground">{subLink.label}</p>
+                                <p className="truncate text-sm text-muted-foreground">{subLink.description}</p>
                               </div>
                             </div>
                             <FontAwesomeIcon
                               icon={faArrowRight}
-                              className="shrink-0 text-xs text-muted-foreground transition-transform group-hover:translate-x-1 group-hover:text-foreground"
+                              className="shrink-0 text-sm text-muted-foreground transition-transform group-hover:translate-x-1 group-hover:text-foreground"
                             />
                           </a>
                         ))}
