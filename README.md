@@ -37,6 +37,8 @@ npm run preview
 - Deployment details: [DEPLOYMENT.md](DEPLOYMENT.md)
 - Contact form / Resend setup: [RESEND_SETUP.md](RESEND_SETUP.md)
 
+GitHub Pages can host the frontend, but direct contact form delivery requires a platform with serverless function support such as Vercel.
+
 ## License
 
 The Spark Template files and resources from GitHub are licensed under the MIT license, Copyright GitHub, Inc.
