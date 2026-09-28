@@ -67,9 +67,18 @@ export function useTheme() {
       setTheme(event.matches ? 'dark' : 'light')
     }
 
-    mediaQuery.addEventListener('change', onThemeChange)
+    if (typeof mediaQuery.addEventListener === 'function') {
+      mediaQuery.addEventListener('change', onThemeChange)
+    } else {
+      mediaQuery.addListener(onThemeChange)
+    }
+
     return () => {
-      mediaQuery.removeEventListener('change', onThemeChange)
+      if (typeof mediaQuery.removeEventListener === 'function') {
+        mediaQuery.removeEventListener('change', onThemeChange)
+      } else {
+        mediaQuery.removeListener(onThemeChange)
+      }
     }
   }, [hasUserPreference])
 
