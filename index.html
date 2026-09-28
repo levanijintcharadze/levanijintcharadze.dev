@@ -30,8 +30,11 @@
         (function () {
             const themeKey = 'portfolio-theme';
             const storedTheme = window.localStorage.getItem(themeKey);
-            const resolvedTheme = storedTheme || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-            if (!storedTheme) {
+            const isValidStoredTheme = storedTheme === 'light' || storedTheme === 'dark';
+            const resolvedTheme = isValidStoredTheme
+                ? storedTheme
+                : (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+            if (!isValidStoredTheme) {
                 window.localStorage.setItem(themeKey, resolvedTheme);
             }
             const root = document.documentElement;
