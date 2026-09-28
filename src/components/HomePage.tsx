@@ -258,24 +258,24 @@ export function HomePage() {
                       target={link.external ? '_blank' : undefined}
                       rel={link.external ? 'noopener noreferrer' : undefined}
                       aria-label={link.external ? `${link.label} (opens in a new tab)` : link.label}
-                      className="group flex items-center justify-between gap-4 rounded-[1.5rem] border border-white/25 bg-white/40 px-4 py-4 text-left shadow-lg shadow-black/5 backdrop-blur-2xl transition duration-300 hover:-translate-y-0.5 hover:bg-white/55 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/70 focus-visible:ring-offset-2 focus-visible:ring-offset-background dark:border-white/10 dark:bg-white/[0.08] dark:hover:bg-white/[0.12] sm:px-5"
+                      className="group flex items-start gap-3 rounded-[1.5rem] border border-white/25 bg-white/40 px-4 py-4 text-left shadow-lg shadow-black/5 backdrop-blur-2xl transition duration-300 hover:-translate-y-0.5 hover:bg-white/55 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/70 focus-visible:ring-offset-2 focus-visible:ring-offset-background dark:border-white/10 dark:bg-white/[0.08] dark:hover:bg-white/[0.12] sm:items-center sm:justify-between sm:gap-4 sm:px-5"
                     >
-                      <div className="flex min-w-0 items-center gap-4">
-                        <div className="flex h-11 w-11 shrink-0 items-center justify-center overflow-hidden rounded-2xl bg-white/60 text-lg text-primary shadow-sm dark:bg-white/10">
+                      <div className="flex min-w-0 flex-1 items-start gap-3 sm:items-center sm:gap-4">
+                        <div className="flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-2xl bg-white/60 text-lg text-primary shadow-sm dark:bg-white/10 sm:h-11 sm:w-11">
                           {link.logoSrc ? (
                             <img src={link.logoSrc} alt={`${link.label} logo`} className="h-full w-full object-cover" />
                           ) : (
                             <FontAwesomeIcon icon={link.icon} />
                           )}
                         </div>
-                        <div className="min-w-0">
-                          <p className="truncate font-medium text-foreground">{link.label}</p>
-                          <p className="truncate text-sm text-muted-foreground">{link.description}</p>
+                        <div className="min-w-0 flex-1">
+                          <p className="break-words font-medium text-foreground sm:truncate">{link.label}</p>
+                          <p className="break-words text-sm leading-5 text-muted-foreground sm:truncate">{link.description}</p>
                         </div>
                       </div>
                       <FontAwesomeIcon
                         icon={faArrowRight}
-                        className="shrink-0 text-sm text-muted-foreground transition-transform group-hover:translate-x-1 group-hover:text-foreground"
+                        className="mt-1 hidden shrink-0 text-sm text-muted-foreground transition-transform group-hover:translate-x-1 group-hover:text-foreground sm:block"
                       />
                     </a>
                   </div>
@@ -314,16 +314,16 @@ export function HomePage() {
                       className="border-white/20 last:border-b-0 dark:border-white/10"
                     >
                       <AccordionTrigger className="py-4 hover:no-underline">
-                        <div className="flex min-w-0 items-center gap-3 text-left">
+                        <div className="flex min-w-0 items-start gap-3 text-left sm:items-center">
                           {hiddenExperienceLogos[experience.value] ? (
-                            <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl border border-white/30 bg-white/45 text-xs font-semibold text-foreground shadow-sm dark:border-white/10 dark:bg-white/10">
+                            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl border border-white/30 bg-white/45 text-xs font-semibold text-foreground shadow-sm dark:border-white/10 dark:bg-white/10 sm:h-11 sm:w-11">
                               {getCompanyInitials(experience.company)}
                             </div>
                           ) : (
                             <img
                               src={experience.logoSrc}
                               alt={`${experience.company} logo`}
-                              className="h-11 w-11 shrink-0 rounded-2xl border border-white/30 object-cover shadow-sm dark:border-white/10"
+                              className="h-10 w-10 shrink-0 rounded-2xl border border-white/30 object-cover shadow-sm dark:border-white/10 sm:h-11 sm:w-11"
                               onError={() =>
                                 setHiddenExperienceLogos((current) => ({
                                   ...current,
@@ -333,10 +333,12 @@ export function HomePage() {
                             />
                           )}
                           <div className="min-w-0">
-                            <p className="truncate font-medium text-foreground">{experience.title}</p>
-                            <p className="truncate text-sm text-muted-foreground">
-                              {experience.company} · {experience.period}
-                            </p>
+                            <p className="break-words font-medium text-foreground sm:truncate">{experience.title}</p>
+                            <div className="mt-1 flex flex-col gap-0.5 text-sm text-muted-foreground sm:flex-row sm:items-center sm:gap-1">
+                              <span className="break-words sm:truncate">{experience.company}</span>
+                              <span className="hidden sm:inline">·</span>
+                              <span>{experience.period}</span>
+                            </div>
                           </div>
                         </div>
                       </AccordionTrigger>
