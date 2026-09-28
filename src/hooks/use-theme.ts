@@ -19,8 +19,17 @@ const getInitialTheme = (): Theme => {
   return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
 }
 
+const hasStoredThemePreference = (): boolean => {
+  if (typeof window === 'undefined') {
+    return false
+  }
+
+  return isTheme(window.localStorage.getItem(THEME_KEY))
+}
+
 export function useTheme() {
   const [theme, setTheme] = useState<Theme>(getInitialTheme)
+  const [hasUserPreference, setHasUserPreference] = useState<boolean>(hasStoredThemePreference)
 
   useEffect(() => {
     const root = window.document.documentElement
@@ -48,10 +57,27 @@ export function useTheme() {
     }
   }, [theme])
 
+  useEffect(() => {
+    if (hasUserPreference) {
+      return
+    }
+
+    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)')
+    const onThemeChange = (event: MediaQueryListEvent) => {
+      setTheme(event.matches ? 'dark' : 'light')
+    }
+
+    mediaQuery.addEventListener('change', onThemeChange)
+    return () => {
+      mediaQuery.removeEventListener('change', onThemeChange)
+    }
+  }, [hasUserPreference])
+
   const toggleTheme = () => {
     setTheme((currentTheme) => {
       const nextTheme = currentTheme === 'light' ? 'dark' : 'light'
       window.localStorage.setItem(THEME_KEY, nextTheme)
+      setHasUserPreference(true)
       return nextTheme
     })
   }
