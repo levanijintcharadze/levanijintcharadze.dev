@@ -34,9 +34,6 @@
             const resolvedTheme = isValidStoredTheme
                 ? storedTheme
                 : (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-            if (!isValidStoredTheme) {
-                window.localStorage.setItem(themeKey, resolvedTheme);
-            }
             const root = document.documentElement;
             root.classList.remove('light', 'dark');
             root.classList.add(resolvedTheme);
