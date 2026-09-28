@@ -1,8 +1,35 @@
-import { useKV } from '@github/spark/hooks'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
+
+const THEME_KEY = 'portfolio-theme'
+
+type Theme = 'light' | 'dark'
+
+const isTheme = (value: string | null): value is Theme => value === 'light' || value === 'dark'
+
+const getInitialTheme = (): Theme => {
+  if (typeof window === 'undefined') {
+    return 'light'
+  }
+
+  const storedTheme = window.localStorage.getItem(THEME_KEY)
+  if (isTheme(storedTheme)) {
+    return storedTheme
+  }
+
+  return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+}
+
+const hasStoredThemePreference = (): boolean => {
+  if (typeof window === 'undefined') {
+    return false
+  }
+
+  return isTheme(window.localStorage.getItem(THEME_KEY))
+}
 
 export function useTheme() {
-  const [theme, setTheme] = useKV('portfolio-theme', 'light')
+  const [theme, setTheme] = useState<Theme>(getInitialTheme)
+  const [hasUserPreference, setHasUserPreference] = useState<boolean>(hasStoredThemePreference)
 
   useEffect(() => {
     const root = window.document.documentElement
@@ -30,8 +57,38 @@ export function useTheme() {
     }
   }, [theme])
 
+  useEffect(() => {
+    if (hasUserPreference) {
+      return
+    }
+
+    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)')
+    const onThemeChange = (event: MediaQueryListEvent) => {
+      setTheme(event.matches ? 'dark' : 'light')
+    }
+
+    if (typeof mediaQuery.addEventListener === 'function') {
+      mediaQuery.addEventListener('change', onThemeChange)
+    } else {
+      mediaQuery.addListener(onThemeChange)
+    }
+
+    return () => {
+      if (typeof mediaQuery.removeEventListener === 'function') {
+        mediaQuery.removeEventListener('change', onThemeChange)
+      } else {
+        mediaQuery.removeListener(onThemeChange)
+      }
+    }
+  }, [hasUserPreference])
+
   const toggleTheme = () => {
-    setTheme(theme === 'light' ? 'dark' : 'light')
+    setTheme((currentTheme) => {
+      const nextTheme = currentTheme === 'light' ? 'dark' : 'light'
+      window.localStorage.setItem(THEME_KEY, nextTheme)
+      setHasUserPreference(true)
+      return nextTheme
+    })
   }
 
   return { theme, toggleTheme }
