@@ -35,7 +35,7 @@ npm run preview
 ## Additional Docs
 
 - Deployment details: [DEPLOYMENT.md](DEPLOYMENT.md)
-- Contact form / email setup: [SENDGRID_SETUP.md](SENDGRID_SETUP.md)
+- Contact form / Resend setup: [SENDGRID_SETUP.md](SENDGRID_SETUP.md)
 
 ## License
 
