@@ -46,10 +46,10 @@ Legacy aliases are also accepted by the API route: `SENDGRID_API_KEY`, `SENDGRID
 ## Troubleshooting
 
 1. **`RESEND_FROM_EMAIL ... is not set` in Vercel logs**: add `RESEND_FROM_EMAIL` (or `SENDGRID_FROM_EMAIL`) in **Vercel → Project → Settings → Environment Variables** for the relevant environment and redeploy.
-1. **401 Unauthorized**: API key is invalid or missing.
-2. **403 Forbidden**: sending domain is unverified or `RESEND_FROM_EMAIL` uses a different domain.
-3. **422 Validation error**: malformed `from` format or invalid recipient.
-4. **No email received**: inspect Vercel function logs and Resend logs.
+2. **401 Unauthorized**: API key is invalid or missing.
+3. **403 Forbidden**: sending domain is unverified or `RESEND_FROM_EMAIL` uses a different domain.
+4. **422 Validation error**: malformed `from` format or invalid recipient.
+5. **No email received**: inspect Vercel function logs and Resend logs.
 
 ## Local Testing
 
