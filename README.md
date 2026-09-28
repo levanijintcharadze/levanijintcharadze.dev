@@ -41,4 +41,4 @@ GitHub Pages can host the frontend, but direct contact form delivery requires a 
 
 ## License
 
-The Spark Template files and resources from GitHub are licensed under the MIT license, Copyright GitHub, Inc.
+This repository is distributed under the [MIT License](LICENSE). It includes Spark Template files and resources from GitHub that are covered by the same license.
