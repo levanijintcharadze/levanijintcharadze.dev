@@ -1,15 +1,8 @@
 import { useKV } from '@github/spark/hooks'
 import { useEffect } from 'react'
 
-const getSystemTheme = () => {
-  if (typeof window !== 'undefined' && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-    return 'dark'
-  }
-  return 'light'
-}
-
 export function useTheme() {
-  const [theme, setTheme] = useKV('portfolio-theme', getSystemTheme())
+  const [theme, setTheme] = useKV('portfolio-theme', 'light')
 
   useEffect(() => {
     const root = window.document.documentElement

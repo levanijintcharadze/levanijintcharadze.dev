@@ -26,6 +26,24 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Levan Jintcharadze - Software Engineer</title>
+    <script>
+        (function () {
+            const themeKey = 'portfolio-theme';
+            const storedTheme = window.localStorage.getItem(themeKey);
+            const resolvedTheme = storedTheme || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+            if (!storedTheme) {
+                window.localStorage.setItem(themeKey, resolvedTheme);
+            }
+            const root = document.documentElement;
+            root.classList.remove('light', 'dark');
+            root.classList.add(resolvedTheme);
+            if (resolvedTheme === 'dark') {
+                root.setAttribute('data-appearance', 'dark');
+            } else {
+                root.removeAttribute('data-appearance');
+            }
+        })();
+    </script>
     
     <!-- Favicons -->
     <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png">
