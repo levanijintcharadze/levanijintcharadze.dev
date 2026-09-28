@@ -1,92 +1,44 @@
-# Levan Jintcharadze - Portfolio
+# Levan Jintcharadze Portfolio
 
-A modern, responsive portfolio website built with React, Vite, and Tailwind CSS.
+This repository powers [levanjintcharadze.dev](https://levanjintcharadze.dev), my personal portfolio website.
 
-## 🚀 Features
+## Overview
 
-- Clean, minimal design
-- Responsive layout
-- Modern tech stack (React 19, Vite, Tailwind CSS)
-- Automated deployment to GitHub Pages
-- Contact form with free mailto fallback
-- Optional Resend email integration for direct in-app sending
+The site highlights my work as a software engineer, including:
 
-## 📦 Getting Started
+- professional profile and focus areas
+- featured links and community presence
+- work experience summary
+- contact options
 
-### Prerequisites
-- Node.js 20 or higher
-- npm
-- Resend API key (for contact form)
+## Tech Stack
 
-### Installation
+- React
+- TypeScript
+- Vite
+- Tailwind CSS
+
+## Local Development
 
 ```bash
-# Install dependencies
 npm install
-
-# Run development server
 npm run dev
+```
 
-# Build for production
+## Production Build
+
+```bash
 npm run build
-
-# Preview production build
 npm run preview
 ```
 
-### Email Configuration
+## Additional Docs
 
-The contact form works in two modes:
+- Deployment details: [DEPLOYMENT.md](DEPLOYMENT.md)
+- Contact form / Resend setup: [RESEND_SETUP.md](RESEND_SETUP.md)
 
-1. Free mode (default): if the API is unavailable, it opens a prefilled `mailto:` draft in the visitor's email app.
-2. Resend mode (optional): sends directly from the site via `/api/send-email`.
+GitHub Pages can host the frontend, but direct contact form delivery requires a platform with serverless function support such as Vercel.
 
-The contact form uses Resend to send emails. To enable this feature:
+## License
 
-1. **Create a Resend account** at [https://resend.com](https://resend.com)
-
-2. **Generate an API key** in Resend:
-   - Go to API Keys
-   - Click "Create API Key"
-   - Give it a name and select sending permissions
-   - Copy the generated API key
-
-3. **Verify a sending domain** in Resend:
-   - Go to Domains and add your domain
-   - Configure the DNS records Resend provides
-   - This will be used as the "from" address for emails
-
-4. **Set up environment variables** in Vercel or your deployment platform:
-   - `RESEND_API_KEY` - Your Resend API key
-   - `RESEND_FROM_EMAIL` - A sender on your verified domain (e.g. `Your Name <contact@yourdomain.com>`)
-   - `CONTACT_EMAIL` - Email address where you want to receive messages (defaults to levanijincharadze@outlook.com)
-   - Legacy aliases are also supported: `SENDGRID_API_KEY`, `SENDGRID_FROM_EMAIL`, `SENDGRID_TO_EMAIL`
-   
-   If you see `RESEND_FROM_EMAIL (or legacy SENDGRID_FROM_EMAIL) is not set` in Vercel function logs, add `RESEND_FROM_EMAIL` in **Vercel → Project → Settings → Environment Variables** (for the relevant environment) and redeploy.
-
-   For local development, create a `.env` file in the root directory:
-   ```
-   RESEND_API_KEY=re_your_resend_api_key_here
-   RESEND_FROM_EMAIL=Your Name <contact@your-verified-domain.com>
-   CONTACT_EMAIL=levanijincharadze@outlook.com
-   ```
-
-5. **Deploy to Vercel** (recommended for serverless functions):
-   - Connect your GitHub repository to Vercel
-   - Add the environment variables in Vercel project settings
-   - Deploy
-
-## 🌐 Deployment
-
-This site is configured for automatic deployment to GitHub Pages. See [DEPLOYMENT.md](DEPLOYMENT.md) for detailed setup instructions.
-
-### Quick Setup:
-1. Go to **Settings** → **Pages** in your GitHub repository
-2. Set **Source** to **GitHub Actions**
-3. Push to the `main` branch to trigger deployment
-
-**Note:** For the contact form to work, you'll need to deploy to a platform that supports serverless functions like Vercel, as GitHub Pages doesn't support backend functionality.
-
-## 📄 License
-
-The Spark Template files and resources from GitHub are licensed under the terms of the MIT license, Copyright GitHub, Inc.
+See [LICENSE](LICENSE) for the repository's MIT license text. Spark Template files and resources included here retain their upstream GitHub attribution in that license file.
