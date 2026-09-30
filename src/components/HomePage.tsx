@@ -59,7 +59,7 @@ const featuredLinks: LinkItem[] = [
   },
   {
     href: 'https://www.dotnetdevs.io/',
-    label: 'DotNetDevs',
+    label: 'dotnetdevs.io',
     description: 'Community platform I maintain for .NET developers.',
     icon: faGlobe,
     logoSrc: 'https://github.com/user-attachments/assets/f1f8b6dc-bc5d-40d0-8be9-2ee4bbff76e0',
