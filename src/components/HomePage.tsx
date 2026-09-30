@@ -213,7 +213,7 @@ export function HomePage() {
         </header>
 
         <main className="flex flex-1 flex-col items-center justify-center">
-          <section className="liquid-panel w-full rounded-4xl p-5 sm:p-8">
+          <section className="w-full">
             <div className="flex flex-col items-center text-center">
               {showProfileImage ? (
                 <img
