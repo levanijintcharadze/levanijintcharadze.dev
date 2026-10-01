@@ -5,7 +5,6 @@ import {
   faArrowRight,
   faCode,
   faEnvelope,
-  faFileArrowDown,
   faGlobe,
   faLocationDot,
 } from '@fortawesome/free-solid-svg-icons'
@@ -37,13 +36,6 @@ type LinkItem = {
 
 const featuredLinks: LinkItem[] = [
   {
-    href: 'https://drive.google.com/uc?export=download&id=1s-CmEKAVsTHsD5E7F1N0HM7e0qc35zGU',
-    label: 'Download Resume',
-    description: 'Experience, architecture work, and shipped products.',
-    icon: faFileArrowDown,
-    external: true,
-  },
-  {
     href: 'https://github.com/levanijintcharadze',
     label: 'GitHub',
     description: 'Projects, experiments, and open-source contributions.',
@@ -59,7 +51,7 @@ const featuredLinks: LinkItem[] = [
   },
   {
     href: 'https://www.dotnetdevs.io/',
-    label: 'DotNetDevs',
+    label: 'dotnetdevs.io',
     description: 'Community platform I maintain for .NET developers.',
     icon: faGlobe,
     logoSrc: 'https://github.com/user-attachments/assets/f1f8b6dc-bc5d-40d0-8be9-2ee4bbff76e0',
@@ -205,9 +197,14 @@ export function HomePage() {
 
       <div className="relative z-10 mx-auto flex min-h-[calc(100vh-3rem)] w-full max-w-2xl flex-col">
         <header className="mb-6 flex items-center justify-between rounded-full border border-white/25 bg-white/12 px-4 py-3 backdrop-blur-xl dark:border-white/10 dark:bg-white/5">
-          <div>
+          <div className="flex items-center gap-3">
+            <span className="flex h-10 w-10 items-center justify-center rounded-2xl border border-white/25 bg-white/35 text-primary shadow-sm dark:border-white/10 dark:bg-white/[0.08]">
+              <FontAwesomeIcon icon={faCode} aria-hidden="true" />
+            </span>
+            <div>
             <p className="text-sm font-medium text-foreground">levanjintcharadze.dev</p>
             <p className="text-xs text-muted-foreground">Personal portfolio</p>
+            </div>
           </div>
           <ThemeToggle />
         </header>
